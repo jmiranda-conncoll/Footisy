@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from signUps.models import Accounts
 
 # Create your views here.
 def index(request):
@@ -26,6 +27,13 @@ def register(request):
             user = user_form.save()
             user.set_password(user.password)
             user.save()
+            name = user.first_name + " " + user.last_name
+            a = Accounts()
+            a.email = user.email
+            a.username = user.username
+            a.name = name
+            a.user = user
+            a.save()
             registered = True
         else:
             print(user_form.errors)

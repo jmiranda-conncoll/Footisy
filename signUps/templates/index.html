@@ -5,9 +5,9 @@
     <h1>Welcome to Footisy!</h1>
     <h2>Find a game. Get active.</h2>
     {% if user.is_authenticated %}
-        <h2>Hello {{ user.username }}</h2>
+        <h2>Hello {{ user.first_name }} {{ user.last_name }}</h2>
     {% else %}
-        <h2>Register or Login to get started</h2>
+        <h2><a href="{% url 'signUps:register' %}">Register</a> or <a href="{% url 'signUps:user_login' %}">Login</a> to get started</h2>
     {% endif %}
   </div>
 </div>
