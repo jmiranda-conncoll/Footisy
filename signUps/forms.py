@@ -8,7 +8,8 @@ class UserForm(forms.ModelForm):
     class Meta():
         model = User
         fields = ('username','first_name','last_name','password','email')
-""" class UserProfileInfoForm(forms.ModelForm):
-     class Meta():
-         model = Accounts
-         fields = ('portfolio_site','profile_pic') """
+
+class UserProfileInfoForm(forms.ModelForm):
+    class Meta():
+        model = Accounts
+        fields = ('bio','sports')

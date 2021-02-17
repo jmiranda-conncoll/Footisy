@@ -18,5 +18,7 @@ class Accounts(models.Model):
 
     sports = models.CharField(max_length=150)
 
+    profile_pic = models.ImageField()
+
 
 

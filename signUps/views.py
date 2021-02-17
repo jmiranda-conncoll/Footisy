@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from signUps.forms import UserForm
+from signUps.forms import UserForm, UserProfileInfoForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -70,3 +70,21 @@ def profile(request):
         "profile": profile_objs,
     }
     return render(request, "profile.html", context)
+
+@login_required
+def editProfile(request):
+    if request.method == 'POST':
+        user_profile_form = UserProfileInfoForm(data=request.POST)
+        if user_profile_form.is_valid():
+            user = request.user
+            a = Accounts.objects.get(user_id = user.id)
+            #a = user_profile_form.
+            #a.profile_pic = user_profile_form.profile_pic
+            a.save()
+        else:
+            print(user_profile_form.errors)
+    else:
+        user_profile_form = UserProfileInfoForm()
+    return render(request,'editProfile.html',
+                          {'user_profile_form':user_profile_form,})
+

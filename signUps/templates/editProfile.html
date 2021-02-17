@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+        <h1>Edit Profile Here</h1>
+        <h3>Just fill out the form</h3>
+<form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ user_profile_form.as_p }}
+          <input type="submit" name="" value="Edit Profile">
+        </form>
+        
+    </div>
+  </div>
+{% endblock %}
