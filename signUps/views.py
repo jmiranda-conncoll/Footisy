@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from signUps.models import Accounts
+from django.contrib.auth.models import User
 
 # Create your views here.
 def index(request):
@@ -60,3 +61,12 @@ def user_login(request):
             return HttpResponse("Invalid login details given")
     else:
         return render(request, 'login.html', {})
+
+@login_required
+def profile(request):
+    user = request.user
+    profile_objs = Accounts.objects.get(user_id = user.id)
+    context = {
+        "profile": profile_objs,
+    }
+    return render(request, "profile.html", context)

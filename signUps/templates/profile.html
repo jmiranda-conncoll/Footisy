@@ -1,0 +1,31 @@
+
+{% extends "base.html" %}
+
+{% block body_block %}
+
+<div class="container">
+    <div class="jumbotron">
+
+            <h1 class="mb4">Name: {{ profile.name}}</h1>
+
+            <header class="b mb2">Username: {{ profile.username }}</header>
+
+            <div class="container">
+                <div class="jumbotron">
+
+                <div class="pl2">
+
+                    <p class="mb2">Bio: {{ profile.bio }} </p>
+
+                    <p class="mb2">Top 3 Sports: {{ profile.sports }}</p>
+
+                    <p class="mb2">email: {{ profile.email }}</p>
+
+                </div>
+                </div>
+
+            </div>
+    </div>
+</div>
+
+{% endblock %}
