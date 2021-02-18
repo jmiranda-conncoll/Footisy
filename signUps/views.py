@@ -82,7 +82,7 @@ def editProfile(request):
             #user_profile_form.save()
             a = user_profile_form.save()
             #a.profile_pic = user_profile_form.profile_pic
-            a.save()
+            #a.save()
         else:
             print(user_profile_form.errors)
     else:
