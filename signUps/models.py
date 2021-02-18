@@ -18,7 +18,7 @@ class Accounts(models.Model):
 
     sports = models.CharField(max_length=150)
 
-    profile_pic = models.ImageField()
+    profile_pic = models.ImageField(upload_to='images/')
 
 
 

@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls import url
 from signUps import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('signUps/', include('signUps.urls')),
     path('admin/', admin.site.urls),
@@ -25,3 +28,6 @@ urlpatterns = [
     url(r'^signUps/',include('signUps.urls')),
     url(r'^logout/$', views.user_logout, name='logout'),
 ]
+if settings.DEBUG: 
+        urlpatterns += static(settings.MEDIA_URL, 
+                              document_root=settings.MEDIA_ROOT) 

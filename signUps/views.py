@@ -74,11 +74,13 @@ def profile(request):
 @login_required
 def editProfile(request):
     if request.method == 'POST':
-        user_profile_form = UserProfileInfoForm(data=request.POST)
+        user_profile_form = UserProfileInfoForm(data=request.POST,files = request.FILES)
         if user_profile_form.is_valid():
             user = request.user
             a = Accounts.objects.get(user_id = user.id)
-            #a = user_profile_form.
+            user_profile_form.instance.user = user
+            #user_profile_form.save()
+            a = user_profile_form.save()
             #a.profile_pic = user_profile_form.profile_pic
             a.save()
         else:
