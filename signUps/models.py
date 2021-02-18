@@ -21,4 +21,20 @@ class Accounts(models.Model):
     profile_pic = models.ImageField(upload_to='images/')
 
 
+class Game(models.Model):
 
+    name = models.CharField(max_length=80)
+
+    sport = models.CharField(max_length=40)
+
+    level = models.IntegerField()
+
+    location = models.CharField(max_length=300)
+
+    max_players = models.IntegerField()
+
+    current_players = models.IntegerField()
+
+    host = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    description = models.CharField(max_length=600)
