@@ -66,6 +66,8 @@ def user_login(request):
 def profile(request):
     user = request.user
     profile_objs = Accounts.objects.get(user_id = user.id)
+    if (profile_objs.profile_pic == ""):
+        profile_objs.profile_pic = "images/pro_pic.jpg"
     context = {
         "profile": profile_objs,
     }
@@ -76,13 +78,15 @@ def editProfile(request):
     if request.method == 'POST':
         user_profile_form = UserProfileInfoForm(data=request.POST,files = request.FILES)
         if user_profile_form.is_valid():
+            bio = request.POST["bio"]
+            pro_pic = request.FILES["profile_pic"]
+            sports = request.POST["sports"]
             user = request.user
             a = Accounts.objects.get(user_id = user.id)
-            user_profile_form.instance.user = user
-            #user_profile_form.save()
-            a = user_profile_form.save()
-            #a.profile_pic = user_profile_form.profile_pic
-            #a.save()
+            a.bio = bio
+            a.profile_pic = pro_pic
+            a.sports = sports
+            a.save()
         else:
             print(user_profile_form.errors)
     else:
