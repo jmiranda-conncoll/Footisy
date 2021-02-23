@@ -38,3 +38,6 @@ class Game(models.Model):
     host = models.ForeignKey(User,on_delete=models.CASCADE)
 
     description = models.CharField(max_length=600)
+
+    #date
+    #time
