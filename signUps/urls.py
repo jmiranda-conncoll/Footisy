@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^user_login/$',views.user_login,name='user_login'),
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^editProfile/$',views.editProfile,name='editProfile'),
+    url(r'^createGame/$',views.createGame,name='createGame'),
 ]
 
 if settings.DEBUG:

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from signUps.forms import UserForm, UserProfileInfoForm
+from signUps.forms import UserForm, UserProfileInfoForm, CreateGameInfoForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -93,4 +93,20 @@ def editProfile(request):
         user_profile_form = UserProfileInfoForm()
     return render(request,'editProfile.html',
                           {'user_profile_form':user_profile_form,})
+
+@login_required
+def createGame(request):
+    if request.method == 'POST':
+        game_form = CreateGameInfoForm(data=request.POST)
+        if game_form.is_valid():
+            game = game_form.save()
+            game.current_players = 1
+            game.host = request.user
+            game.save()
+        else:
+            print(game_form.errors)
+    else:
+        game_form = CreateGameInfoForm()
+    return render(request,'createGame.html',
+                          {'game_form':game_form})
 

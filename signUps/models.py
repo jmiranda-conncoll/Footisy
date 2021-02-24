@@ -27,17 +27,18 @@ class Game(models.Model):
 
     sport = models.CharField(max_length=40)
 
-    level = models.IntegerField()
+    level = models.CharField(max_length=80)
 
     location = models.CharField(max_length=300)
 
     max_players = models.IntegerField()
 
-    current_players = models.IntegerField()
+    current_players = models.IntegerField(null=True)
 
-    host = models.ForeignKey(User,on_delete=models.CASCADE)
+    host = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
 
     description = models.CharField(max_length=600)
 
     #date
+    date = models.DateTimeField()
     #time
