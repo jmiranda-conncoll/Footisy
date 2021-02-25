@@ -14,9 +14,9 @@
           <li><a class="navbar-brand" href="{% url 'index' %}">FOOTISY</a></li>
           {# Some logic on what to display for last item#}
           {% if user.is_authenticated %}
-            <li><a href="{% url 'signUps:profile' %}">My Profile</a></li>
-            <li><a href="{% url 'signUps:myGames' %}">My Games</a></li>
             <li><a href="{% url 'signUps:createGame' %}">Create Game</a></li>
+            <li><a href="{% url 'signUps:myGames' %}">My Games</a></li>
+            <li><a href="{% url 'signUps:profile' %}">My Profile</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
           {% else %}
             <li><a class="navbar-link" href="{% url 'admin:index' %}">Admin</a></li> 
