@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+        <h2>Here are the games that you are hosting:</h2>
+        {% if games_list %}
+            <ul>
+                {% for game in games_list %}
+                    <div class="container">
+                        <div class="jumbotron">
+                        <p class="mb2">Name: {{ game.name }} </p>
+                        <p class="mb2">Sport: {{ game.sport }} </p>
+                        <p class="mb2">Level: {{ game.level }} </p>
+                        <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
+                        </div>
+                        </div>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2>You are not hosting any games currently</h2>
+        {% endif %}
+
+    </div>
+  </div>
+{% endblock %}

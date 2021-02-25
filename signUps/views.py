@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from signUps.models import Accounts
+from signUps.models import Accounts, Game
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -96,6 +96,7 @@ def editProfile(request):
 
 @login_required
 def createGame(request):
+    created = True
     if request.method == 'POST':
         game_form = CreateGameInfoForm(data=request.POST)
         if game_form.is_valid():
@@ -103,10 +104,21 @@ def createGame(request):
             game.current_players = 1
             game.host = request.user
             game.save()
+            created = False
         else:
             print(game_form.errors)
     else:
         game_form = CreateGameInfoForm()
     return render(request,'createGame.html',
-                          {'game_form':game_form})
+                          {'game_form':game_form,
+                          'not_created':created})
+
+@login_required
+def displayMyGames(request):
+    user = request.user
+    game_objs = Game.objects.filter(host_id = user.id)
+    context = {
+        "games_list": game_objs,
+    }
+    return render(request, "myGames.html", context)
 
