@@ -9,9 +9,8 @@
                      <img src="{{ profile.profile_pic.url }}" class="img-responsive" style="width: 100%; float: center; margin-right: 10px;" /> 
             </div> 
     
-            <h3 class="b mb2">Name: {{ profile.name | linebreaks}}</h3>
-
-            <header class="b mb2">Username: @{{ profile.username }}</header>
+            <h3 class="b mb2"> @{{ profile.username }}</h3>
+            <h3 class="b mb2">Name: {{ profile.name | linebreaks}}</h3>            
 
             <div class="container">
                 <div class="jumbotron">

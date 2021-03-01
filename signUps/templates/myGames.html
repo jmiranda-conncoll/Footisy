@@ -11,10 +11,10 @@
                         <div class="jumbotron">
                         <p class="mb2">Name: {{ game.name }} </p>
                         <p class="mb2">Sport: {{ game.sport }} </p>
-                        <p class="mb2">Level: {{ game.level }} </p>
+                        <p class="mb2">{{ game.level }} </p>
                         <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
                         </div>
-                        </div>
+                    </div>
                 {% endfor %}
             </ul>
         {% else %}
