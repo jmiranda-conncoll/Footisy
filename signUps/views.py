@@ -115,10 +115,20 @@ def createGame(request):
 
 @login_required
 def displayMyGames(request):
-    user = request.user
-    game_objs = Game.objects.filter(host_id = user.id)
-    context = {
-        "games_list": game_objs,
-    }
+    if request.method == 'POST':
+        p
+    else:
+        user = request.user
+        game_objs = Game.objects.filter(host_id = user.id)
+        context = {
+            "games_list": game_objs,
+        }
     return render(request, "myGames.html", context)
 
+@login_required
+def gamebyId(request, game_id):
+    game_obj = Game.objects.get(id = game_id)
+    context = {
+        "game": game_obj,
+    }
+    return render(request, "gamebyID.html", context)

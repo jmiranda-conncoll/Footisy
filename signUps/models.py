@@ -42,3 +42,16 @@ class Game(models.Model):
     #date
     date = models.DateTimeField()
     #time
+
+class GamePlayers(models.Model):
+
+    game = models.ForeignKey(Game,on_delete=models.CASCADE, null=True)
+
+    player = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
+
+
+""" class Teammates(models.Model):
+
+    user1 = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
+
+    user2 = models.ManyToManyField(User,on_delete=models.CASCADE, null=True) """

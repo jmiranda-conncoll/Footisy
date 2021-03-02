@@ -8,12 +8,16 @@
             <ul>
                 {% for game in games_list %}
                     <div class="container">
-                        <div class="jumbotron">
+                        <tr>
+                        <p class="mb2">ID: {{ game.id }} </p>
                         <p class="mb2">Name: {{ game.name }} </p>
                         <p class="mb2">Sport: {{ game.sport }} </p>
                         <p class="mb2">{{ game.level }} </p>
                         <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
-                        </div>
+                        <input type="hidden" name="game_id" value="{{ game.id }}">
+                        <a href="" class="btn btn-danger" role="button">Delete Game</a>
+                        <a href="/signUps/games/{{ game.id }}" class="btn btn-warning" role="button">See Game Details</a>
+                        </tr>
                     </div>
                 {% endfor %}
             </ul>

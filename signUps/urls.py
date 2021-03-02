@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^editProfile/$',views.editProfile,name='editProfile'),
     url(r'^createGame/$',views.createGame,name='createGame'),
     url(r'^myGames/$',views.displayMyGames,name='myGames'),
+    path('games/<int:game_id>/', views.gamebyId, name='gamebyID')
 ]
 
 if settings.DEBUG:
