@@ -39,6 +39,8 @@ class Game(models.Model):
 
     description = models.CharField(max_length=600)
 
+    temp = models.BooleanField(null=True)
+
     #date
     date = models.DateTimeField()
     #time

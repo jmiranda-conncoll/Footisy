@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from signUps.models import Accounts, Game
+from signUps.models import Accounts, Game, GamePlayers
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -29,6 +29,7 @@ def register(request):
             user.set_password(user.password)
             user.save()
             name = user.first_name + " " + user.last_name
+            #initialize the account record on registration
             a = Accounts()
             a.email = user.email
             a.username = user.username
@@ -83,6 +84,10 @@ def editProfile(request):
             sports = request.POST["sports"]
             user = request.user
             a = Accounts.objects.get(user_id = user.id)
+
+            #add if statements here to check if each field was changed
+            #make sure none of the fields are required
+
             a.bio = bio
             a.profile_pic = pro_pic
             a.sports = sports
@@ -115,20 +120,98 @@ def createGame(request):
 
 @login_required
 def displayMyGames(request):
-    if request.method == 'POST':
-        p
-    else:
-        user = request.user
-        game_objs = Game.objects.filter(host_id = user.id)
-        context = {
-            "games_list": game_objs,
-        }
+    user = request.user
+    game_objs = Game.objects.filter(host_id = user.id)
+
+    #add here games they are attending 
+
+    #add them to same list and sort by date
+
+    context = {
+        "games_list": game_objs,
+    }
     return render(request, "myGames.html", context)
 
 @login_required
 def gamebyId(request, game_id):
     game_obj = Game.objects.get(id = game_id)
+    #add here to check if the host
+    if (game_obj.host == request.user):
+        is_host = True
+    else:
+        is_host = False
+    
+    #get the attending users
+    attending_objs = GamePlayers.objects.filter(game_id = game_id)
+    #add here to check if they are attending
+    is_attending = False
+    for obj in attending_objs:
+        temp_user = obj.player
+        if (request.user == temp_user):
+            is_attending = True
+            break
+
     context = {
         "game": game_obj,
+        "players_list": attending_objs,
+        "host": is_host,
+        "attending": is_attending,
+    }
+    return render(request, "gamebyID.html", context)
+
+@login_required
+def profilebyID(request, profile_id):
+    profile_obj = Accounts.objects.get(user_id = profile_id)
+
+    #check if teammates
+
+    context = {
+        "profile": profile_obj,
+    }
+    return render(request, "profilebyID.html", context)
+
+@login_required
+def displayAllGames(request):
+    game_objs = Game.objects.filter()
+
+    #get rid of games that user is the host of
+
+
+    attending_objs = GamePlayers.objects.filter(player_id = request.user.id)
+    for g in attending_objs:
+        for game in game_objs:
+            if game.id == g.game.id:
+                game.temp = True
+                break
+    context = {
+        "games_list": game_objs,
+    }
+    return render(request, "allGames.html", context)
+
+@login_required
+def attendGame(request, game_id):
+    game_obj = Game.objects.get(id = game_id)
+    temp = game_obj.current_players
+
+    #check here if game is full before creating the record, create 2 paths here with if statement
+
+    temp = temp + 1
+    game_obj.current_players = temp
+    game_obj.save()
+    gp = GamePlayers()
+    gp.game = game_obj
+    gp.player = request.user
+    gp.save()
+    #add here to check if the host
+    is_host = False
+    #add here to say they are attending
+    is_attending = True
+    #get the attending users
+    attending_objs = GamePlayers.objects.filter(game_id = game_obj.id)
+    context = {
+        "game": game_obj,
+        "players_list": attending_objs,
+        "host": is_host,
+        "attending": is_attending,
     }
     return render(request, "gamebyID.html", context)

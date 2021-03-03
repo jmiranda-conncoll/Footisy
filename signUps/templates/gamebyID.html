@@ -4,11 +4,15 @@
   <div class="container">
     <div class="jumbotron">
 
-        <p class="mb2">ID: {{ game.id }} </p>
+        <p class="mb2">{{ game.date }} </p>
         <p class="mb2">Name: {{ game.name }} </p>
         <p class="mb2">Sport: {{ game.sport }} </p>
         <p class="mb2">{{ game.level }} </p>
+        <p class="mb2">{{ game.location }} </p>
         <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
+        <p class="mb2">Host: <a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }})</p>
+        <p class="mb2">{{ game.description }} </p>
+
         <a href="" class="btn btn-danger" role="button">Delete Game</a>
         <a href="" class="btn btn-success" role="button">STest</a>
 
