@@ -121,9 +121,15 @@ def createGame(request):
 @login_required
 def displayMyGames(request):
     user = request.user
-    game_objs = Game.objects.filter(host_id = user.id)
+    game_objs = Game.objects.filter(host_id = user.id).order_by('date')
 
-    #add here games they are attending 
+    #add here games they are attending
+    gp_objs = GamePlayers.objects.filter(player = user)
+    for gp in gp_objs:
+        game = Game.objects.get(id = gp.game.id)
+        #games that are true will be one they are attending
+        game.temp = True
+        game_objs.add(game)
 
     #add them to same list and sort by date
 
@@ -172,11 +178,9 @@ def profilebyID(request, profile_id):
 
 @login_required
 def displayAllGames(request):
-    game_objs = Game.objects.filter()
-
-    #get rid of games that user is the host of
-
-
+    #displays all games but filters out the ones they created
+    game_objs = Game.objects.filter().exclude(host_id = request.user.id)
+    #game_objs = Game.objects.filter().exclude(host_id = request.user.id)[:50]
     attending_objs = GamePlayers.objects.filter(player_id = request.user.id)
     for g in attending_objs:
         for game in game_objs:
