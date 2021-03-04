@@ -10,12 +10,19 @@
         <p class="mb2">{{ game.level }} </p>
         <p class="mb2">{{ game.location }} </p>
         <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
-        <p class="mb2">Host: <a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }})</p>
-        <p class="mb2">{{ game.description }} </p>
-
-        <a href="" class="btn btn-danger" role="button">Delete Game</a>
-        <a href="" class="btn btn-success" role="button">STest</a>
-
+        {% if host %}
+          <p class="mb2">*You are the host for this game*</p>
+          <p class="mb2">{{ game.description }} </p>
+          <a href="" class="btn btn-danger" role="button">Delete Game</a>
+        {% else %}
+          <p class="mb2">Host: <a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }})</p>
+          <p class="mb2">{{ game.description }} </p>
+          {% if attending %}
+            <a href="" class="btn btn-danger" role="button">Unattend Game</a>
+          {% else %}
+            <a href="" class="btn btn-success" role="button">Attend Game</a>
+          {% endif %}
+        {% endif %}
     </div>
   </div>
 {% endblock %}
