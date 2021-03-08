@@ -27,4 +27,31 @@
 
     </div>
   </div>
+  <div class="container">
+    <div class="jumbotron">
+        <h2>Here are the games that you are attending:</h2>
+        {% if attending_list %}
+            <ul>
+                {% for game in attending_list %}
+                    <div class="container">
+                        <tr>
+                        <p class="mb2">ID: {{ game.id }} </p>
+                        <p class="mb2">Name: {{ game.name }} </p>
+                        <p class="mb2">Sport: {{ game.sport }} </p>
+                        <p class="mb2">{{ game.level }} </p>
+                        <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
+                        <p class="mb2">Host: <a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }}) </p>
+                        <input type="hidden" name="game_id" value="{{ game.id }}">
+                        <a href="" class="btn btn-danger" role="button">unAttend Game</a>
+                        <a href="/signUps/games/{{ game.id }}" class="btn btn-warning" role="button">See Game Details</a>
+                        </tr>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2>You are not attending any games currently</h2>
+        {% endif %}
+
+    </div>
+  </div>
 {% endblock %}

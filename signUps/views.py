@@ -120,21 +120,23 @@ def createGame(request):
 
 @login_required
 def displayMyGames(request):
+    attending_list = []
     user = request.user
     game_objs = Game.objects.filter(host_id = user.id).order_by('date')
 
     #add here games they are attending
-    gp_objs = GamePlayers.objects.filter(player = user)
-    for gp in gp_objs:
-        game = Game.objects.get(id = gp.game.id)
-        #games that are true will be one they are attending
-        game.temp = True
-        game_objs.add(game)
+    if (GamePlayers.objects.filter(player = user).exists()):
+        gp_objs = GamePlayers.objects.filter(player = user)
+        for gp in gp_objs:
+            game = Game.objects.get(id = gp.game.id)
+            game.temp = True
+            attending_list.append(game)
 
-    #add them to same list and sort by date
+    #sort attending list by date
 
     context = {
         "games_list": game_objs,
+        "attending_list": attending_list
     }
     return render(request, "myGames.html", context)
 
@@ -179,8 +181,8 @@ def profilebyID(request, profile_id):
 @login_required
 def displayAllGames(request):
     #displays all games but filters out the ones they created
-    game_objs = Game.objects.filter().exclude(host_id = request.user.id)
-    #game_objs = Game.objects.filter().exclude(host_id = request.user.id)[:50]
+    #game_objs = Game.objects.filter().exclude(host_id = request.user.id)
+    game_objs = Game.objects.filter().exclude(host_id = request.user.id)[:50]
     attending_objs = GamePlayers.objects.filter(player_id = request.user.id)
     for g in attending_objs:
         for game in game_objs:
@@ -198,6 +200,8 @@ def attendGame(request, game_id):
     temp = game_obj.current_players
 
     #check here if game is full before creating the record, create 2 paths here with if statement
+    #if current_players == max_players
+    #else
 
     temp = temp + 1
     game_obj.current_players = temp
