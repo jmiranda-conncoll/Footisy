@@ -3,36 +3,38 @@
 
 {% block javascript %}
     <script>
-        $("#attend").click(function() {
-            var id;
-            id = $(this).attr("data-id");
-            $.ajax({
-                url: '{% url "signUps:attendGame" %}',
-                data: {
-                    'id': id
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data.is_taken) {
-                        alert(data.error_message);
+        $(document).ready(function () {
+            $(".btn-success").on("click", function(event) {
+                var id;
+                id = $(this).attr("data-id");
+                $.ajax({
+                    url: '{% url "signUps:attendGame" %}',
+                    data: {
+                        'id': id
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        if (data.yes) {
+                            alert(data.error_message);
+                        }
                     }
-                }
+                });
             });
-        });
-        $("#leave").click(function() {
-            var id;
-            id = $(this).attr("data-id");
-            $.ajax({
-                url: '{% url "signUps:leaveGame" %}',
-                data: {
-                    'id': id
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data.is_taken) {
-                        alert(data.error_message);
+            $(".btn-danger").on("click", function(event) {
+                var id;
+                id = $(this).attr("data-id");
+                $.ajax({
+                    url: '{% url "signUps:leaveGame" %}',
+                    data: {
+                        'id': id
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        if (data.yes) {
+                            alert(data.error_message);
+                        }
                     }
-                }
+                });
             });
         });
     </script>
@@ -52,9 +54,9 @@
                         <p class="mb2">{{ game.level }} </p>
                         <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
                         {% if game.temp %}
-                            <a href="" class="btn btn-danger" id="leave" role="button" data-id="{{ game.id }}">Leave Game</a>
+                            <button class="btn btn-danger" type="button" data-id="{{ game.id }}">Leave Game</button>
                         {% else %}
-                            <a href="" class="btn btn-success" id="attend" role="button" data-id="{{ game.id }}">Attend Game</a>
+                            <button class="btn btn-success" type="button" data-id="{{ game.id }}">Attend Game</button>
                         {% endif %}
                         <a href="/signUps/games/{{ game.id }}" class="btn btn-warning" role="button">See Game Details</a>
                         </tr>

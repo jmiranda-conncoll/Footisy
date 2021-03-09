@@ -203,29 +203,46 @@ def attendGame(request):
     game_id = request.GET.get('id', None)
     game_obj = Game.objects.get(id = game_id)
     temp = game_obj.current_players
+    boolis = True
 
     #check here if game is full before creating the record, create 2 paths here with if statement
-    #if current_players == max_players
-    #else
+    if (temp == game_obj.max_players):
+        data = {
+            'yes': boolis,
+        }
+        if (data['yes']):
+            data['error_message'] = 'hey im full'
 
-    temp = temp + 1
-    game_obj.current_players = temp
-    game_obj.save()
-    gp = GamePlayers()
-    gp.game = game_obj
-    gp.player = request.user
-    gp.save()
+        return JsonResponse(data)
+    
+    else:
+        if (GamePlayers.objects.filter(game = game_obj).filter(player = request.user).exists()):
+            data = {
+                'yes': boolis,
+            }
+            if (data['yes']):
+                data['error_message'] = 'hey i exist'
 
-    #check if they are already attending
+            return JsonResponse(data)
+        else:
 
-    data = {
-        'yes': True,
-    }
-    if (data['yes']):
-        data['error_message'] = 'hey'
+            temp = temp + 1
+            game_obj.current_players = temp
+            game_obj.save()
+            gp = GamePlayers()
+            gp.game = game_obj
+            gp.player = request.user
+            gp.save()
 
-    #return displayAllGames(request)
-    return JsonResponse(data)
+            #check if they are already attending
+            boolis = False
+            data = {
+                'yes': boolis,
+            }
+            data['error_message'] = 'hey i am attending'
+
+            #return displayAllGames(request)
+            return JsonResponse(data)
 
 @login_required
 def leaveGame(request):
@@ -239,8 +256,9 @@ def leaveGame(request):
     game_obj.current_players = temp
     game_obj.save()
 
+    boolis = False
     data = {
-        'yes': True,
+        'yes': boolis,
     }
     if (data['yes']):
         data['error_message'] = 'hi there'
