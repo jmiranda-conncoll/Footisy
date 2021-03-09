@@ -1,5 +1,33 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block javascript %}
+    <script>
+        $("#attend").click(function() {
+            var id;
+            id = $(this).attr("data-id");
+            $.ajax({
+                url: '{% url "signUps:attendGame" %}',
+                data: {
+                    'id': id
+                },
+                dataType: 'json',
+            })
+        })
+        $("#leave").click(function() {
+            var id;
+            id = $(this).attr("data-id");
+            $.ajax({
+                url: '{% url "signUps:leaveGame" %}',
+                data: {
+                    'id': id
+                },
+                dataType: 'json',
+            })
+        })
+    </script>
+{% endblock %}
+
 {% block body_block %}
   <div class="container">
     <div class="jumbotron">
@@ -14,9 +42,9 @@
                         <p class="mb2">{{ game.level }} </p>
                         <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
                         {% if game.temp %}
-                            <a href="" class="btn btn-danger" role="button">Unattend Game</a>
+                            <a href="" class="btn btn-danger" id="leave" role="button" data-id="{{ game.id }}">Leave Game</a>
                         {% else %}
-                            <a href="/signUps/game/{{ game.id }}" class="btn btn-success" role="button">Attend Game</a>
+                            <a href="" class="btn btn-success" id="attend" role="button" data-id="{{ game.id }}">Attend Game</a>
                         {% endif %}
                         <a href="/signUps/games/{{ game.id }}" class="btn btn-warning" role="button">See Game Details</a>
                         </tr>

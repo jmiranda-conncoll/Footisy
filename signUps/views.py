@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from signUps.forms import UserForm, UserProfileInfoForm, CreateGameInfoForm
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from signUps.models import Accounts, Game, GamePlayers
@@ -173,6 +173,9 @@ def profilebyID(request, profile_id):
 
     #check if teammates
 
+    if (profile_obj.profile_pic == ""):
+        profile_obj.profile_pic = "images/pro_pic.jpg"
+
     context = {
         "profile": profile_obj,
     }
@@ -195,7 +198,8 @@ def displayAllGames(request):
     return render(request, "allGames.html", context)
 
 @login_required
-def attendGame(request, game_id):
+def attendGame(request):
+    game_id = request.GET.get('id', None)
     game_obj = Game.objects.get(id = game_id)
     temp = game_obj.current_players
 
@@ -210,16 +214,26 @@ def attendGame(request, game_id):
     gp.game = game_obj
     gp.player = request.user
     gp.save()
-    #add here to check if the host
-    is_host = False
-    #add here to say they are attending
-    is_attending = True
-    #get the attending users
-    attending_objs = GamePlayers.objects.filter(game_id = game_obj.id)
-    context = {
-        "game": game_obj,
-        "players_list": attending_objs,
-        "host": is_host,
-        "attending": is_attending,
-    }
-    return render(request, "gamebyID.html", context)
+
+    displayAllGames(request)
+
+@login_required
+def leaveGame(request):
+    game_id = request.GET.get('id', None)
+    player = request.user
+    gamePlayer = GamePlayers.objects.filter(game_id = game_id).get(player = player).delete()
+    game_obj = Game.objects.get(id = game_id)
+    temp = game_obj.current_players
+
+    temp = temp - 1
+    game_obj.current_players = temp
+    game_obj.save()
+
+    displayAllGames(request)
+
+@login_required
+def deleteGame(request):
+    geu
+    #first delete all game players from the table 
+    #GamePlayers.objects.filter(game_id = game_id).delete()
+    #then delete game from Game table

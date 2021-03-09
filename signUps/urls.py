@@ -17,7 +17,8 @@ urlpatterns = [
     path('games/<int:game_id>/', views.gamebyId, name='gamebyID'),
     path('user/<int:profile_id>/', views.profilebyID, name='profilebyID'),
     url(r'^allGames/$',views.displayAllGames,name='allGames'),
-    path('game/<int:game_id>/', views.attendGame, name='gamebyID'),
+    url(r'^attend_game/', views.attendGame, name='attendGame'),
+    url(r'^leave_game/', views.leaveGame, name='leaveGame'),
 ]
 
 if settings.DEBUG:
