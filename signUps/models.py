@@ -41,6 +41,8 @@ class Game(models.Model):
 
     temp = models.BooleanField(null=True)
 
+    #add isFull booleanField
+
     #date
     date = models.DateTimeField()
     #time

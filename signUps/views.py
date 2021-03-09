@@ -151,17 +151,19 @@ def gamebyId(request, game_id):
     
     #get the attending users
     attending_objs = GamePlayers.objects.filter(game_id = game_id)
+    user_list = []
     #add here to check if they are attending
     is_attending = False
     for obj in attending_objs:
         temp_user = obj.player
+        user_list.append(temp_user)
         if (request.user == temp_user):
             is_attending = True
             break
 
     context = {
         "game": game_obj,
-        "players_list": attending_objs,
+        "players_list": user_list,
         "host": is_host,
         "attending": is_attending,
     }
@@ -184,7 +186,6 @@ def profilebyID(request, profile_id):
 @login_required
 def displayAllGames(request):
     #displays all games but filters out the ones they created
-    #game_objs = Game.objects.filter().exclude(host_id = request.user.id)
     game_objs = Game.objects.filter().exclude(host_id = request.user.id)[:50]
     attending_objs = GamePlayers.objects.filter(player_id = request.user.id)
     for g in attending_objs:
@@ -215,7 +216,16 @@ def attendGame(request):
     gp.player = request.user
     gp.save()
 
-    displayAllGames(request)
+    #check if they are already attending
+
+    data = {
+        'yes': True,
+    }
+    if (data['yes']):
+        data['error_message'] = 'hey'
+
+    #return displayAllGames(request)
+    return JsonResponse(data)
 
 @login_required
 def leaveGame(request):
@@ -229,7 +239,14 @@ def leaveGame(request):
     game_obj.current_players = temp
     game_obj.save()
 
-    displayAllGames(request)
+    data = {
+        'yes': True,
+    }
+    if (data['yes']):
+        data['error_message'] = 'hi there'
+
+    #return displayAllGames(request)
+    return JsonResponse(data)
 
 @login_required
 def deleteGame(request):

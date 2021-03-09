@@ -17,7 +17,7 @@ urlpatterns = [
     path('games/<int:game_id>/', views.gamebyId, name='gamebyID'),
     path('user/<int:profile_id>/', views.profilebyID, name='profilebyID'),
     url(r'^allGames/$',views.displayAllGames,name='allGames'),
-    url(r'^attend_game/', views.attendGame, name='attendGame'),
+    url(r'^attend_game', views.attendGame, name='attendGame'),
     url(r'^leave_game/', views.leaveGame, name='leaveGame'),
 ]
 

@@ -12,8 +12,13 @@
                     'id': id
                 },
                 dataType: 'json',
-            })
-        })
+                success: function (data) {
+                    if (data.is_taken) {
+                        alert(data.error_message);
+                    }
+                }
+            });
+        });
         $("#leave").click(function() {
             var id;
             id = $(this).attr("data-id");
@@ -23,8 +28,13 @@
                     'id': id
                 },
                 dataType: 'json',
-            })
-        })
+                success: function (data) {
+                    if (data.is_taken) {
+                        alert(data.error_message);
+                    }
+                }
+            });
+        });
     </script>
 {% endblock %}
 
