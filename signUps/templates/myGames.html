@@ -1,14 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 {% block body_block %}
-  <div class="container">
-    <div class="jumbotron">
-        <h2>Here are the games that you are hosting:</h2>
+    <h2>Here are the games that you are hosting:</h2>
         {% if games_list %}
-            <ul>
                 {% for game in games_list %}
                     <div class="container">
-                        <tr>
+                       <div class="jumbotron">
                         <p class="mb2">ID: {{ game.id }} </p>
                         <p class="mb2">Name: {{ game.name }} </p>
                         <p class="mb2">Sport: {{ game.sport }} </p>
@@ -17,24 +14,18 @@
                         <input type="hidden" name="game_id" value="{{ game.id }}">
                         <a href="" class="btn btn-danger" role="button">Delete Game</a>
                         <a href="/signUps/games/{{ game.id }}" class="btn btn-warning" role="button">See Game Details</a>
-                        </tr>
+                        </div>
                     </div>
                 {% endfor %}
-            </ul>
         {% else %}
             <h2>You are not hosting any games currently</h2>
         {% endif %}
-
-    </div>
-  </div>
-  <div class="container">
-    <div class="jumbotron">
+        
         <h2>Here are the games that you are attending:</h2>
         {% if attending_list %}
-            <ul>
                 {% for game in attending_list %}
                     <div class="container">
-                        <tr>
+                      <div class="jumbotron">
                         <p class="mb2">ID: {{ game.id }} </p>
                         <p class="mb2">Name: {{ game.name }} </p>
                         <p class="mb2">Sport: {{ game.sport }} </p>
@@ -44,14 +35,10 @@
                         <input type="hidden" name="game_id" value="{{ game.id }}">
                         <a href="" class="btn btn-danger" role="button">unAttend Game</a>
                         <a href="/signUps/games/{{ game.id }}" class="btn btn-warning" role="button">See Game Details</a>
-                        </tr>
+                      </div>
                     </div>
                 {% endfor %}
-            </ul>
         {% else %}
             <h2>You are not attending any games currently</h2>
         {% endif %}
-
-    </div>
-  </div>
 {% endblock %}

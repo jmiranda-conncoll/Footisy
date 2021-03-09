@@ -240,8 +240,6 @@ def attendGame(request):
                 'yes': boolis,
             }
             data['error_message'] = 'hey i am attending'
-
-            #return displayAllGames(request)
             return JsonResponse(data)
 
 @login_required
@@ -263,7 +261,6 @@ def leaveGame(request):
     if (data['yes']):
         data['error_message'] = 'hi there'
 
-    #return displayAllGames(request)
     return JsonResponse(data)
 
 @login_required
