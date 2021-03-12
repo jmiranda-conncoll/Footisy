@@ -233,11 +233,14 @@ def attendGame(request):
             gp.game = game_obj
             gp.player = request.user
             gp.save()
+            _max = game_obj.max_players
 
             #check if they are already attending
             boolis = False
             data = {
                 'yes': boolis,
+                'attend': temp,
+                'max': _max,
             }
             data['error_message'] = 'hey i am attending'
             return JsonResponse(data)
@@ -257,6 +260,8 @@ def leaveGame(request):
     boolis = False
     data = {
         'yes': boolis,
+        'attend': temp,
+        'max': game_obj.max_players,
     }
     if (data['yes']):
         data['error_message'] = 'hi there'

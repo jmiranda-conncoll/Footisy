@@ -1,5 +1,66 @@
 {% extends "base.html" %}
 {% load static %}
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+            $(".btn-danger").on("click", function(event) {
+                var id;
+                id = $(this).attr("data-id");
+                $(this).attr({"disabled": true});
+                
+            });
+            $(".btn-success").on("click", function(event) {
+                var id;
+                id = $(this).attr("data-id");
+                $(this).attr({"disabled": true});
+                $.ajax({
+                    url: '{% url "signUps:attendGame" %}',
+                    data: {
+                        'id': id
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        if (data.yes) {
+                            alert(data.error_message);
+                        }
+                        var _attend;
+                        var _max;
+                        _attend = data.attend;
+                        _max = data.max;
+                        $("#data_change").html("Players Coming: "+ _attend +" / " + _max);
+                        $("#data_change2").html("Players Coming: "+ _attend +" / " + _max);
+                        
+                        
+                    }
+                });
+            });
+            $(".btn-warning").on("click", function(event) {
+                var id;
+                id = $(this).attr("data-id");
+                $(this).attr({"disabled": true});
+                $.ajax({
+                    url: '{% url "signUps:leaveGame" %}',
+                    data: {
+                        'id': id
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        if (data.yes) {
+                            alert(data.error_message);
+                        }
+                        var _attend;
+                        var _max;
+                        _attend = data.attend;
+                        _max = data.max;
+                        $("#data_change").html("Players Coming: "+ _attend +" / " + _max);
+                        $("#data_change2").html("Players Coming: "+ _attend +" / " + _max);
+                        
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
 {% block body_block %}
   <div class="container">
     <div class="jumbotron">
@@ -9,7 +70,7 @@
         <p class="mb2">Sport: {{ game.sport }} </p>
         <p class="mb2">{{ game.level }} </p>
         <p class="mb2">{{ game.location }} </p>
-        <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
+        <p class="mb2" id="data_change">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
         {% if host %}
           <p class="mb2">*You are the host for this game*</p>
           <p class="mb2">{{ game.description }} </p>
@@ -18,9 +79,9 @@
           <p class="mb2">Host: <a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }})</p>
           <p class="mb2">{{ game.description }} </p>
           {% if attending %}
-            <a href="" class="btn btn-danger" role="button">Unattend Game</a>
+            <button class="btn btn-warning" role="button" data-id="{{ game.id }}">Leave Game</button>
           {% else %}
-            <a href="" class="btn btn-success" role="button">Attend Game</a>
+            <button class="btn btn-success" role="button" data-id="{{ game.id }}">Attend Game</button>
           {% endif %}
         {% endif %}
     </div>
@@ -28,8 +89,12 @@
   <div class="container">
     <div class="jumbotron">
 
-        <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
-        <p class="mb2"><a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }}) *Host*</p>
+        <p class="mb2" id="data_change2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
+        {% if host %}
+          <p class="mb2">*You are the Host*</p>
+        {% else %}
+          <p class="mb2"><a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }}) *Host*</p>
+        {% endif %}
         {% for user in players_list %}
           <p class="mb2"><a href="/signUps/user/{{ user.id }}" >@{{ user.username }}</a>  ({{ user.first_name }} {{ user.last_name }})</p>
         {% endfor %}

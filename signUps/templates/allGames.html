@@ -18,6 +18,12 @@
                         if (data.yes) {
                             alert(data.error_message);
                         }
+                        var _attend;
+                        var _max;
+                        _attend = data.attend;
+                        _max = data.max;
+                        $("#"+id).html("Players Coming: "+ _attend +" / " + _max);
+                        
                     }
                 });
             });
@@ -35,6 +41,12 @@
                         if (data.yes) {
                             alert(data.error_message);
                         }
+                        var _attend;
+                        var _max;
+                        _attend = data.attend;
+                        _max = data.max;
+                        $("#"+id).html("Players Coming: "+ _attend +" / " + _max);
+                        
                     }
                 });
             });
@@ -48,11 +60,11 @@
         {% if games_list %}
             {% for game in games_list %}
                 <div class="container">
-                    <div class="jumbotron" id="{{ game.id }}">
+                    <div class="jumbotron">
                         <p class="mb2">{{ game.name }} </p>
                         <p class="mb2">Sport: {{ game.sport }} </p>
                         <p class="mb2">{{ game.level }} </p>
-                        <p class="mb2 data_change">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
+                        <p class="mb2 data_change" id="{{ game.id }}">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
                         {% if game.temp %}
                             <button class="btn btn-warning" type="button" data-id="{{ game.id }}">Leave Game</button>
                         {% else %}

@@ -1,5 +1,41 @@
 {% extends "base.html" %}
 {% load static %}
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+            $(".btn-danger").on("click", function(event) {
+                var id;
+                id = $(this).attr("data-id");
+                $(this).attr({"disabled": true});
+                
+            });
+            $(".btn-warning").on("click", function(event) {
+                var id;
+                id = $(this).attr("data-id");
+                $(this).attr({"disabled": true});
+                $.ajax({
+                    url: '{% url "signUps:leaveGame" %}',
+                    data: {
+                        'id': id
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        if (data.yes) {
+                            alert(data.error_message);
+                        }
+                        var _attend;
+                        var _max;
+                        _attend = data.attend;
+                        _max = data.max;
+                        $("#"+id).html("Players Coming: "+ _attend +" / " + _max);
+                        
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block body_block %}
     <h2>Here are the games that you are hosting:</h2>
         {% if games_list %}
@@ -12,7 +48,7 @@
                         <p class="mb2">{{ game.level }} </p>
                         <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
                         <input type="hidden" name="game_id" value="{{ game.id }}">
-                        <a href="" class="btn btn-danger" role="button">Delete Game</a>
+                        <button data-id="{{ game.id }}" class="btn btn-danger" role="button">Delete Game</button>
                         <a href="/signUps/games/{{ game.id }}" class="btn btn-info" role="button">See Game Details</a>
                         </div>
                     </div>
@@ -30,10 +66,10 @@
                         <p class="mb2">Name: {{ game.name }} </p>
                         <p class="mb2">Sport: {{ game.sport }} </p>
                         <p class="mb2">{{ game.level }} </p>
-                        <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
+                        <p class="mb2" id="{{ game.id }}">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
                         <p class="mb2">Host: <a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }}) </p>
                         <input type="hidden" name="game_id" value="{{ game.id }}">
-                        <a href="" class="btn btn-warning" role="button">unAttend Game</a>
+                        <button data-id="{{ game.id }}" class="btn btn-warning" role="button">Leave Game</button>
                         <a href="/signUps/games/{{ game.id }}" class="btn btn-info" role="button">See Game Details</a>
                       </div>
                     </div>
