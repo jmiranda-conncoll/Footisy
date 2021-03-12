@@ -7,7 +7,7 @@
             $(".btn-success").on("click", function(event) {
                 var id;
                 id = $(this).attr("data-id");
-                $(this).disabled = true;
+                $(this).attr({"disabled": true});
                 $.ajax({
                     url: '{% url "signUps:attendGame" %}',
                     data: {
@@ -21,10 +21,10 @@
                     }
                 });
             });
-            $(".btn-danger").on("click", function(event) {
+            $(".btn-warning").on("click", function(event) {
                 var id;
                 id = $(this).attr("data-id");
-                $(this).disabled = true;
+                $(this).attr({"disabled": true});
                 $.ajax({
                     url: '{% url "signUps:leaveGame" %}',
                     data: {
@@ -54,11 +54,11 @@
                         <p class="mb2">{{ game.level }} </p>
                         <p class="mb2 data_change">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
                         {% if game.temp %}
-                            <button class="btn btn-danger" type="button" data-id="{{ game.id }}">Leave Game</button>
+                            <button class="btn btn-warning" type="button" data-id="{{ game.id }}">Leave Game</button>
                         {% else %}
                             <button class="btn btn-success" type="button" data-id="{{ game.id }}">Attend Game</button>
                         {% endif %}
-                        <a href="/signUps/games/{{ game.id }}" class="btn btn-warning" role="button">See Game Details</a>
+                        <a href="/signUps/games/{{ game.id }}" class="btn btn-info" role="button">See Game Details</a>
                     </div>
                 </div>
             {% endfor %}

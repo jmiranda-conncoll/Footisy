@@ -13,7 +13,7 @@
                         <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
                         <input type="hidden" name="game_id" value="{{ game.id }}">
                         <a href="" class="btn btn-danger" role="button">Delete Game</a>
-                        <a href="/signUps/games/{{ game.id }}" class="btn btn-warning" role="button">See Game Details</a>
+                        <a href="/signUps/games/{{ game.id }}" class="btn btn-info" role="button">See Game Details</a>
                         </div>
                     </div>
                 {% endfor %}
@@ -33,8 +33,8 @@
                         <p class="mb2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
                         <p class="mb2">Host: <a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }}) </p>
                         <input type="hidden" name="game_id" value="{{ game.id }}">
-                        <a href="" class="btn btn-danger" role="button">unAttend Game</a>
-                        <a href="/signUps/games/{{ game.id }}" class="btn btn-warning" role="button">See Game Details</a>
+                        <a href="" class="btn btn-warning" role="button">unAttend Game</a>
+                        <a href="/signUps/games/{{ game.id }}" class="btn btn-info" role="button">See Game Details</a>
                       </div>
                     </div>
                 {% endfor %}
