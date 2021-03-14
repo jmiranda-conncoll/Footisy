@@ -96,7 +96,7 @@
           <p class="mb2"><a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }}) *Host*</p>
         {% endif %}
         {% for user in players_list %}
-          <p class="mb2"><a href="/signUps/user/{{ user.id }}" >@{{ user.username }}</a>  ({{ user.first_name }} {{ user.last_name }})</p>
+          <p class="mb2" id="{{ user.id }}"><a href="/signUps/user/{{ user.id }}" >@{{ user.username }}</a>  ({{ user.first_name }} {{ user.last_name }})</p>
         {% endfor %}
     </div>
   </div>

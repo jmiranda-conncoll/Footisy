@@ -86,11 +86,17 @@ def editProfile(request):
             a = Accounts.objects.get(user_id = user.id)
 
             #add if statements here to check if each field was changed
+            if (bio != ""):
+                a.bio = bio
+
+            if (sports != ""):
+                a.sports = sports
+
+            if (pro_pic != ""):
+                a.profile_pic = pro_pic
+
             #make sure none of the fields are required
 
-            a.bio = bio
-            a.profile_pic = pro_pic
-            a.sports = sports
             a.save()
         else:
             print(user_profile_form.errors)
@@ -132,7 +138,7 @@ def displayMyGames(request):
             game.temp = True
             attending_list.append(game)
 
-    #sort attending list by date
+    #sort attending list by date?
 
     context = {
         "games_list": game_objs,
@@ -171,17 +177,20 @@ def gamebyId(request, game_id):
 
 @login_required
 def profilebyID(request, profile_id):
-    profile_obj = Accounts.objects.get(user_id = profile_id)
+    if (profile_id == request.user.id):
+        return profile(request)
+    else:
+        profile_obj = Accounts.objects.get(user_id = profile_id)
 
-    #check if teammates
+        #check if teammates
 
-    if (profile_obj.profile_pic == ""):
-        profile_obj.profile_pic = "images/pro_pic.jpg"
+        if (profile_obj.profile_pic == "" or profile_obj.profile_pic == None):
+            profile_obj.profile_pic = "images/pro_pic.jpg"
 
-    context = {
-        "profile": profile_obj,
-    }
-    return render(request, "profilebyID.html", context)
+        context = {
+            "profile": profile_obj,
+        }
+        return render(request, "profilebyID.html", context)
 
 @login_required
 def displayAllGames(request):
@@ -216,6 +225,7 @@ def attendGame(request):
         return JsonResponse(data)
     
     else:
+        #check if they are already attending
         if (GamePlayers.objects.filter(game = game_obj).filter(player = request.user).exists()):
             data = {
                 'yes': boolis,
@@ -235,7 +245,6 @@ def attendGame(request):
             gp.save()
             _max = game_obj.max_players
 
-            #check if they are already attending
             boolis = False
             data = {
                 'yes': boolis,
@@ -274,3 +283,4 @@ def deleteGame(request):
     #first delete all game players from the table 
     #GamePlayers.objects.filter(game_id = game_id).delete()
     #then delete game from Game table
+    #Game.objects.get(id = game_id).delete()

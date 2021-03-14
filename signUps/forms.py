@@ -23,11 +23,11 @@ SPORT_CHOICES = [
     ('spikeball', 'Spikeball'),
     ]
 LEVEL_CHOICES = [
-    ('level 1: beginner', 'Level 1: Beginner'),
-    ('level 2: fun', 'Level 2: Just For Fun'),
-    ('level 3: sweat', 'Level 3: Break a sweat'),
-    ('level 4: skilled', 'Level 4: High Competition'),
-    ('level 5: intense', 'Level 5: Intense Training'),
+    ('Level 1: Beginner', 'Level 1: Beginner'),
+    ('Level 2: Just For Fun', 'Level 2: Just For Fun'),
+    ('Level 3: Break a sweat', 'Level 3: Break a sweat'),
+    ('Level 4: High Competition', 'Level 4: High Competition'),
+    ('Level 5: Intense Training', 'Level 5: Intense Training'),
     ]
 
 class CreateGameInfoForm(forms.ModelForm):
