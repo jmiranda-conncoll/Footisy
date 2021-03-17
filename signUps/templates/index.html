@@ -1,4 +1,26 @@
 {% extends "base.html" %}
+{% block javascript %}
+    <script>
+      let map;
+
+      function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 35.333, lng: -90.333 },
+          zoom: 5,
+        });
+        addMarker(map);
+      }
+
+      function addMarker(mapa_) {
+        const latLng = { lat: 35.333, lng: -90.333 };
+        const marker = new google.maps.Marker({
+          position: latLng,
+          map: mapa_,
+          icon: 'media/images/soccer-ball.png',
+        });
+      }
+    </script>
+{% endblock %}
 {% block body_block %}
 <div class="container">
   <div class="jumbotron">
@@ -12,7 +34,12 @@
   </div>
 </div>
 {% if user.is_authenticated %}
-  <h1>Google Maps Coming Soon</h1>
+  <div id="map" style="height:400px; width:800px; margin:150px"> </div>
+  <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiRulAGF1hJPBF0Wh7qnw5dNZvL2lFP5c&callback=initMap"
+      async
+    ></script>
+
 
 {% endif %}
 {% endblock %}
