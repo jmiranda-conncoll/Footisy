@@ -3,6 +3,74 @@
 
 {% block javascript %}
     <script>
+        let map;
+
+        function initMap() {
+            const map2 = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 35.333, lng: -90.333 },
+                zoom: 7,
+            });
+            var sport = "soccer";
+            const latLng = { lat: 35.333, lng: -90.333 };
+            //addMarker(map2,sport,latLng);
+            var sport2 = "football";
+            const latLng2 = { lat: 36.333, lng: -90.333 };
+            //addMarker(map2,sport2,latLng2);
+            var sport3 = "tennis";
+            const latLng3 = { lat: 35.833, lng: -90.933 };
+            //addMarker(map2,sport3,latLng3);
+            var sport4 = "basketball";
+            const latLng4 = { lat: 35.833, lng: -90.333 };
+            //addMarker(map2,sport4,latLng4);
+            var sport5 = "spikeball";
+            const latLng5 = { lat: 35.833, lng: -89.933 };
+            //addMarker(map2,sport5,latLng5);
+
+            var l = 37;          
+            var latLng6 = { lat: l, lng: -89.933 };
+            var temp = "football";
+            var contentString = '';
+            {% if games_list %}
+                {% for event in games_list %}
+                    contentString = 
+                    '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    "</div>" +
+                    '<h1 id="firstHeading" class="firstHeading">{{ event.name }} </h1>'+
+                    '<div id="bodyContent">' +
+                    '<h4>{{ event.level }} </h4>'+
+                    '<h4 class="mb2 data_change" id="{{ event.id }}">Players Coming: {{ event.current_players }} / {{ event.max_players }} </h4>'+
+                    '<a href="/signUps/games/{{ event.id }}" class="btn btn-info" role="button">See Game Details</a>'
+                    "</div>" +
+                    "</div>";
+                    temp = "{{event.sport}}";
+                    latLng6 = { lat: l, lng: -89.933 };
+                    addMarker(map2, temp, latLng6,contentString);
+                    l = l + 0.3;
+                {% endfor %}
+            {%endif%}
+        
+        }
+
+        function addMarker(mapa_,game,latLng,contentString) {
+                
+            const infowindow = new google.maps.InfoWindow({
+                content: contentString,
+            });
+            var icon2 = {
+                url: '/media/images/'+game+'-ball.png', // url
+                scaledSize: new google.maps.Size(20, 20), // size
+            };
+            const marker = new google.maps.Marker({
+                position: latLng,
+                map: mapa_,
+                icon: icon2,
+            });
+            marker.addListener("click", () => {
+                infowindow.open(mapa_, marker);
+            })
+        }
+
         $(document).ready(function () {
             $(".btn-success").on("click", function(event) {
                 var id;
@@ -55,6 +123,11 @@
 {% endblock %}
 
 {% block body_block %}
+    <div id="map" style="height:400px; width:800px; margin:100px"> </div>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiRulAGF1hJPBF0Wh7qnw5dNZvL2lFP5c&callback=initMap"
+      async
+    ></script>
     <h2>Here are all of the current games:</h2>
 
         {% if games_list %}
