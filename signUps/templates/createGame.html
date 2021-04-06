@@ -1,15 +1,148 @@
 {% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% block javascript %}
+  <style type="text/css">
+      #map {
+        margin-left: auto;
+        margin-right: auto;
+        width:90%;
+        height:425px;
+      }
+      .custom-map-control-button {
+        appearance: button;
+        background-color: #fff;
+        border: 0;
+        border-radius: 2px;
+        box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        margin: 10px;
+        padding: 0 0.5em;
+        height: 40px;
+        font: 400 18px Roboto, Arial, sans-serif;
+        overflow: hidden;
+      }
+      .custom-map-control-button:hover {
+        background: #ebebeb;
+      }
+    </style>
+    <script>
+        let map, infoWindow;
+
+        var data = { lat: null, lng: null };
+        var marker;
+
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 41.355, lng: -72.099 },
+                zoom: 7,
+            });
+
+            // Listen for clicks and add the location of the click.
+            map.addListener('click', function(e) {
+              data.lat = e.latLng.lat();
+              data.lng = e.latLng.lng();
+              const locat = { lat: data.lat, lng: data.lng };
+              addMarker(map, locat);
+            });
+
+            //get Current Location
+            infoWindow = new google.maps.InfoWindow();
+            const locationButton = document.createElement("button");
+            locationButton.textContent = "Pan to Current Location";
+            locationButton.classList.add("custom-map-control-button");
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(
+              locationButton
+            );
+            locationButton.addEventListener("click", () => {
+              // Try HTML5 geolocation.
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                  (position) => {
+                    const pos = {
+                      lat: position.coords.latitude,
+                      lng: position.coords.longitude,
+                    };
+                    //infoWindow.setPosition(pos);
+                    //infoWindow.setContent("Location found.");
+                    //infoWindow.open(map);
+                    marker2 = new google.maps.Marker({
+                      position: pos,
+                      map: map,
+                      animation: google.maps.Animation.DROP,
+                      label: "you",
+                    });
+                    map.setCenter(pos);
+                    map.setZoom(13);
+                  },
+                  () => {
+                    handleLocationError(true, infoWindow, map.getCenter(), map);
+                  }
+                );
+              } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter(), map);
+              }
+            });
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos, mapa_) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(
+          browserHasGeolocation
+            ? "Error: The Geolocation service failed."
+            : "Error: Your browser doesn't support geolocation."
+        );
+        infoWindow.open(mapa_);
+      }
+
+
+        function addMarker(mapa_,latLng) {
+          if (!marker || !marker.setPosition) {
+            mapa_.setCenter(latLng);
+            marker = new google.maps.Marker({
+              position: latLng,
+              map: mapa_,
+              animation: google.maps.Animation.DROP,
+              draggable: true,
+              label: "game",
+            });
+          } else {
+            marker.setPosition(location);
+          }
+        }
+
+        function getPositionMarker() {
+          marker.setDraggable(false);
+          var lat = marker.getPosition().lat();
+          var lng = marker.getPosition().lng();
+          $("#lat").attr({"value": lat,"placeholder": lat});
+          $("#lat").html("latitude: "+ lat);
+          $("#lon").attr({"value": lng,"placeholder": lng});
+          $("#lon").html("longitude: "+ lng);
+        }
+    </script>
+{% endblock %}
 {% block body_block %}
   <div class="container">
     <div class="jumbotron">
       {% if not_created %}
         <h1>Create your game below!</h1>
         <h3>Just fill out the form</h3>
+        <h4>First set the location on the map</h4>
+        <div id="map"> </div>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiRulAGF1hJPBF0Wh7qnw5dNZvL2lFP5c&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+    <br>
+    <button onclick="getPositionMarker()" class="btn btn-success" type="button">Lock Location</button>
+    <br>
 <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
           {{ game_form|crispy }}
+          <input type="hidden" name="game_lat" id="lat" value="">
+          <input type="hidden" name="game_long" id="lon" value="">
           <input type="submit" name="" class="btn btn-primary" value="Create Game">
         </form>
       {% else %}

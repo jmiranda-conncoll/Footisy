@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from signUps.models import Accounts, Game, GamePlayers
 from django.contrib.auth.models import User
+from decimal import Decimal
 
 # Create your views here.
 def index(request):
@@ -112,8 +113,11 @@ def createGame(request):
         game_form = CreateGameInfoForm(data=request.POST)
         if game_form.is_valid():
             game = game_form.save()
+            game.lat = request.POST["game_lat"]
+            game.lng = request.POST["game_long"]
             game.current_players = 1
             game.host = request.user
+            game.isFull = False
             game.save()
             created = False
         else:
@@ -165,7 +169,6 @@ def gamebyId(request, game_id):
         user_list.append(temp_user)
         if (request.user == temp_user):
             is_attending = True
-            break
 
     context = {
         "game": game_obj,
@@ -196,6 +199,7 @@ def profilebyID(request, profile_id):
 def displayAllGames(request):
     #displays all games but filters out the ones they created
     game_objs = Game.objects.filter().exclude(host_id = request.user.id)[:50]
+    #filter out games that are full
     attending_objs = GamePlayers.objects.filter(player_id = request.user.id)
     for g in attending_objs:
         for game in game_objs:

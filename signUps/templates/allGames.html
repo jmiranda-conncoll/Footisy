@@ -2,32 +2,42 @@
 {% load static %}
 
 {% block javascript %}
+    <style type="text/css">
+      #map {
+        margin-left: auto;
+        margin-right: auto;
+        width:70%;
+        height:425px;
+      }
+      .custom-map-control-button {
+        appearance: button;
+        background-color: #fff;
+        border: 0;
+        border-radius: 2px;
+        box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        margin: 10px;
+        padding: 0 0.5em;
+        height: 40px;
+        font: 400 18px Roboto, Arial, sans-serif;
+        overflow: hidden;
+      }
+      .custom-map-control-button:hover {
+        background: #ebebeb;
+      }
+    </style>
     <script>
-        let map;
+        let map, infoWindow;
 
         function initMap() {
-            const map2 = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 35.333, lng: -90.333 },
+            var map2 = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 41.355, lng: -72.099 },
                 zoom: 7,
             });
-            var sport = "soccer";
-            const latLng = { lat: 35.333, lng: -90.333 };
-            //addMarker(map2,sport,latLng);
-            var sport2 = "football";
-            const latLng2 = { lat: 36.333, lng: -90.333 };
-            //addMarker(map2,sport2,latLng2);
-            var sport3 = "tennis";
-            const latLng3 = { lat: 35.833, lng: -90.933 };
-            //addMarker(map2,sport3,latLng3);
-            var sport4 = "basketball";
-            const latLng4 = { lat: 35.833, lng: -90.333 };
-            //addMarker(map2,sport4,latLng4);
-            var sport5 = "spikeball";
-            const latLng5 = { lat: 35.833, lng: -89.933 };
-            //addMarker(map2,sport5,latLng5);
 
-            var l = 37;          
-            var latLng6 = { lat: l, lng: -89.933 };
+            var l = 41.355;
+            var r = -72.099;       
+            var latLng6 = { lat: l, lng: r };
             var temp = "football";
             var contentString = '';
             {% if games_list %}
@@ -44,13 +54,61 @@
                     "</div>" +
                     "</div>";
                     temp = "{{event.sport}}";
-                    latLng6 = { lat: l, lng: -89.933 };
+                    l = parseFloat("{{event.lat}}");
+                    r = parseFloat("{{event.lng}}");
+                    latLng6 = { lat: l , lng: r };
                     addMarker(map2, temp, latLng6,contentString);
-                    l = l + 0.3;
                 {% endfor %}
             {%endif%}
-        
-        }
+            //get Current Location
+            infoWindow = new google.maps.InfoWindow();
+            const locationButton = document.createElement("button");
+            locationButton.textContent = "Pan to Current Location";
+            locationButton.classList.add("custom-map-control-button");
+            map2.controls[google.maps.ControlPosition.TOP_CENTER].push(
+              locationButton
+            );
+            locationButton.addEventListener("click", () => {
+              // Try HTML5 geolocation.
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                  (position) => {
+                    const pos = {
+                      lat: position.coords.latitude,
+                      lng: position.coords.longitude,
+                    };
+                    //infoWindow.setPosition(pos);
+                    //infoWindow.setContent("Location found.");
+                    //infoWindow.open(map);
+                    marker2 = new google.maps.Marker({
+                      position: pos,
+                      map: map2,
+                      animation: google.maps.Animation.DROP,
+                      label: "you",
+                    });
+                    map2.setCenter(pos);
+                    map2.setZoom(13);
+                  },
+                  () => {
+                    handleLocationError(true, infoWindow, map2.getCenter(), map2);
+                  }
+                );
+              } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map2.getCenter(), map2);
+              }
+            });
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos, mapa_) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(
+          browserHasGeolocation
+            ? "Error: The Geolocation service failed."
+            : "Error: Your browser doesn't support geolocation."
+        );
+        infoWindow.open(mapa_);
+      }
 
         function addMarker(mapa_,game,latLng,contentString) {
                 
@@ -59,12 +117,13 @@
             });
             var icon2 = {
                 url: '/media/images/'+game+'-ball.png', // url
-                scaledSize: new google.maps.Size(20, 20), // size
+                scaledSize: new google.maps.Size(25, 25), // size
             };
             const marker = new google.maps.Marker({
                 position: latLng,
                 map: mapa_,
                 icon: icon2,
+                animation: google.maps.Animation.DROP,
             });
             marker.addListener("click", () => {
                 infowindow.open(mapa_, marker);
@@ -123,7 +182,7 @@
 {% endblock %}
 
 {% block body_block %}
-    <div id="map" style="height:400px; width:800px; margin:100px"> </div>
+    <div id="map"> </div>
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiRulAGF1hJPBF0Wh7qnw5dNZvL2lFP5c&callback=initMap"
       async

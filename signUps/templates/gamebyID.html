@@ -65,7 +65,7 @@
   <div class="container">
     <div class="jumbotron">
 
-        <p class="mb2">{{ game.date }} </p>
+        <p class="mb2">{{ game.date }} @ {{ game.time }} </p>
         <p class="mb2">Name: {{ game.name }} </p>
         <p class="mb2">Sport: {{ game.sport }} </p>
         <p class="mb2">{{ game.level }} </p>
@@ -77,7 +77,7 @@
           <a href="" class="btn btn-danger" role="button">Delete Game</a>
         {% else %}
           <p class="mb2">Host: <a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }})</p>
-          <p class="mb2">{{ game.description }} </p>
+          <p class="mb2">Description: {{ game.description }} </p>
           {% if attending %}
             <button class="btn btn-warning" role="button" data-id="{{ game.id }}">Leave Game</button>
           {% else %}
@@ -91,7 +91,7 @@
 
         <p class="mb2" id="data_change2">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
         {% if host %}
-          <p class="mb2">*You are the Host*</p>
+          <p class="mb2">*You as the Host*</p>
         {% else %}
           <p class="mb2"><a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }}) *Host*</p>
         {% endif %}

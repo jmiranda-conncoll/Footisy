@@ -33,7 +33,7 @@ LEVEL_CHOICES = [
 class CreateGameInfoForm(forms.ModelForm):
     sport = forms.CharField(label='Select Sport:', widget=forms.Select(choices= SPORT_CHOICES))
     level = forms.CharField(label='Select Level:', widget=forms.Select(choices= LEVEL_CHOICES))
-    date = forms.DateTimeField(label='Set Date & Time:', widget=forms.SelectDateWidget(years=range(datetime.date.today().year, datetime.date.today().year+1)))
+    date = forms.DateTimeField(label='Set Date:', widget=forms.SelectDateWidget(years=range(datetime.date.today().year, datetime.date.today().year+1)))
     class Meta():
         model = Game
-        fields = ('name', 'sport', 'level', 'location', 'max_players', 'description', 'date')
+        fields = ('name', 'sport', 'level', 'max_players', 'date', 'time', 'description')

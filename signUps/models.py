@@ -42,10 +42,16 @@ class Game(models.Model):
     temp = models.BooleanField(null=True)
 
     #add isFull booleanField
+    isFull = models.BooleanField(null=True)
 
     #date
-    date = models.DateTimeField()
+    date = models.DateField(null=True)
     #time
+    time = models.TimeField(null=True)
+
+    lat = models.CharField(max_length=300, null=True)
+
+    lng = models.CharField(max_length=300, null=True)
 
 class GamePlayers(models.Model):
 
