@@ -1,71 +1,4 @@
 {% extends "base.html" %}
-{% block javascript %}
-    <script>
-      let map;
-
-      function initMap() {
-        const map = new google.maps.Map(document.getElementById("map"), {
-          center: { lat: 35.333, lng: -90.333 },
-          zoom: 7,
-        });
-        var sport = "soccer";
-        const latLng = { lat: 35.333, lng: -90.333 };
-        addMarker(map,sport,latLng);
-        var sport2 = "football";
-        const latLng2 = { lat: 36.333, lng: -90.333 };
-        addMarker(map,sport2,latLng2);
-        var sport3 = "tennis";
-        const latLng3 = { lat: 35.833, lng: -90.933 };
-        addMarker(map,sport3,latLng3);
-        var sport4 = "basketball";
-        const latLng4 = { lat: 35.833, lng: -90.333 };
-        addMarker(map,sport4,latLng4);
-        var sport5 = "spikeball";
-        const latLng5 = { lat: 35.833, lng: -89.933 };
-        addMarker(map,sport5,latLng5);
-      }
-
-      function addMarker(mapa_,sport,latLng) {
-        const contentString =
-          '<div id="content">' +
-          '<div id="siteNotice">' +
-          "</div>" +
-          '<h1 id="firstHeading" class="firstHeading">'+sport+' Game</h1>' +
-          '<div id="bodyContent">' +
-          "<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large " +
-          "sandstone rock formation in the southern part of the " +
-          "Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) " +
-          "south west of the nearest large town, Alice Springs; 450&#160;km " +
-          "(280&#160;mi) by road. Kata Tjuta and Uluru are the two major " +
-          "features of the Uluru - Kata Tjuta National Park. Uluru is " +
-          "sacred to the Pitjantjatjara and Yankunytjatjara, the " +
-          "Aboriginal people of the area. It has many springs, waterholes, " +
-          "rock caves and ancient paintings. Uluru is listed as a World " +
-          "Heritage Site.</p>" +
-          '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-          "https://en.wikipedia.org/w/index.php?title=Uluru</a> " +
-          "(last visited June 22, 2009).</p>" +
-          "</div>" +
-          "</div>";
-        const infowindow = new google.maps.InfoWindow({
-          content: contentString,
-        });
-        var icon = {
-            url: 'media/images/'+sport+'-ball.png', // url
-            scaledSize: new google.maps.Size(20, 20), // size
-        };
-        const marker = new google.maps.Marker({
-          position: latLng,
-          map: mapa_,
-          icon: icon,
-        });
-        marker.setSize = new google.maps.Size(100, 100)
-        marker.addListener("click", () => {
-          infowindow.open(mapa_, marker);
-        })
-      }
-    </script>
-{% endblock %}
 {% block body_block %}
 <div class="container">
   <div class="jumbotron">
@@ -78,13 +11,4 @@
     {% endif %}
   </div>
 </div>
-{% if user.is_authenticated %}
-  <div id="map" style="height:400px; width:800px; margin:100px"> </div>
-  <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiRulAGF1hJPBF0Wh7qnw5dNZvL2lFP5c&callback=initMap"
-      async
-    ></script>
-
-
-{% endif %}
 {% endblock %}
