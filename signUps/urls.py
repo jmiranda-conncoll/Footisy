@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^allGames/$',views.displayAllGames,name='allGames'),
     url(r'^attend_game', views.attendGame, name='attendGame'),
     url(r'^leave_game/', views.leaveGame, name='leaveGame'),
+    url(r'^center_map/', views.centerMap, name='centerMap'),
 ]
 
 if settings.DEBUG:

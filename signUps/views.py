@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from signUps.models import Accounts, Game, GamePlayers
 from django.contrib.auth.models import User
 from decimal import Decimal
+import requests
+import json
+from urllib.parse import urlencode, urlparse, parse_qsl
 
 # Create your views here.
 def index(request):
@@ -288,3 +291,31 @@ def deleteGame(request):
     #GamePlayers.objects.filter(game_id = game_id).delete()
     #then delete game from Game table
     #Game.objects.get(id = game_id).delete()
+
+@login_required
+def centerMap(request):
+    address = request.GET.get('add', None)
+    #address = "59 Woodside Rd, Winchester, MA"
+    api_key = "AIzaSyBiRulAGF1hJPBF0Wh7qnw5dNZvL2lFP5c"
+    data_type = 'json'
+    endpoint = f"https://maps.googleapis.com/maps/api/geocode/{data_type}"
+    params = {"address": address, "key": api_key}
+    url_params = urlencode(params)
+
+    url = f"{endpoint}?{url_params}"
+
+    r = requests.get(url)
+    if (r.status_code not in range(200, 299)):
+        return {}
+    latlng = {}
+    try: 
+        latlng = r.json()['results'][0]['geometry']['location']
+    except:
+        pass
+
+    data = {
+        'lat': latlng.get("lat"),
+        'lng': latlng.get("lng"),
+    }
+
+    return JsonResponse(data)

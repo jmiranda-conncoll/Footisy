@@ -9,6 +9,16 @@
         width:90%;
         height:425px;
       }
+      #addField {
+        width: 400px;
+        margin-bottom: 30px;
+      }
+      #space {
+        margin-bottom: 30px;
+      }
+      #space2 {
+        margin-bottom: 30px;
+      }
       .custom-map-control-button {
         appearance: button;
         background-color: #fff;
@@ -33,7 +43,7 @@
         var marker;
 
         function initMap() {
-            var map = new google.maps.Map(document.getElementById("map"), {
+            map = new google.maps.Map(document.getElementById("map"), {
                 center: { lat: 41.355, lng: -72.099 },
                 zoom: 7,
             });
@@ -84,7 +94,32 @@
                 handleLocationError(false, infoWindow, map.getCenter(), map);
               }
             });
-      }
+            $("#addSubmit").on("click", function(event) {
+              var address;
+              address = $("#addField").val();
+              $.ajax({
+                  url: '{% url "signUps:centerMap" %}',
+                  data: {
+                      'add': address
+                  },
+                  dataType: 'json',
+                  success: function(data){
+                      var pos = {
+                        lat: data.lat,
+                        lng: data.lng,
+                      };
+                      map.setCenter(pos);
+                      map.setZoom(13);
+                      var marker2 = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        animation: google.maps.Animation.DROP,
+                        label: "you",
+                      });
+                  }
+              });
+            });
+        }
 
       function handleLocationError(browserHasGeolocation, infoWindow, pos, mapa_) {
         infoWindow.setPosition(pos);
@@ -120,7 +155,14 @@
           $("#lat").html("latitude: "+ lat);
           $("#lon").attr({"value": lng,"placeholder": lng});
           $("#lon").html("longitude: "+ lng);
+          map.setOptions({draggable: false});
         }
+
+        function unlock(){
+          marker.setDraggable(true);
+          map.setOptions({draggable: true});
+        }
+
     </script>
 {% endblock %}
 {% block body_block %}
@@ -130,13 +172,19 @@
         <h1>Create your game below!</h1>
         <h3>Just fill out the form</h3>
         <h4>First set the location on the map</h4>
+        <h5>If you don't want to share your current location, then enter your full address below.</h5>
+        <h5>Ex: 270 Mohegan Ave Pkwy, New London, CT</h5>
+        <label for="add">Address:</label>
+        <input id="addField" type="text" name="address" placeholder="270 Mohegan Ave Pkwy, New London, CT">
+        <button class="btn btn-primary" role="button" id="addSubmit" >Find Address</button>
         <div id="map"> </div>
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiRulAGF1hJPBF0Wh7qnw5dNZvL2lFP5c&callback=initMap&libraries=&v=weekly"
       async
     ></script>
     <br>
-    <button onclick="getPositionMarker()" class="btn btn-success" type="button">Lock Location</button>
+    <button onclick="getPositionMarker()" class="btn btn-success" type="button" id="space2">Lock Location</button>
+    <button onclick="unlock()" class="btn btn-warning" type="button" id="space">Unlock Location</button>
     <br>
 <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
