@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% block javascript %}
+    <style type="text/css">
+      .asteriskField {
+          display: none;
+      }
+    </style>
+{% endblock %}
 {% block body_block %}
   <div class="container">
     <div class="jumbotron">
       <h1>Login here :</h1>
-<form method="post" action="{% url 'signUps:user_login' %}">
+<form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
-          {# A more "HTML" way of creating the login form#}
-          <label for="username">Username:</label>
-        
-          <input type="text" name="username" placeholder="Username">
-          <br>
-<label for="password">Password: </label>
-          <input type="password" name="password" placeholder="Password">
-          <br>
-<input type="submit" name="" class="btn btn-primary" value="Login">
-</form>
+          {{ login_form|crispy }}
+          <input type="submit" name="" class="btn btn-primary" value="Log in">
+        </form>
 </div>
   </div>
 {% endblock %}

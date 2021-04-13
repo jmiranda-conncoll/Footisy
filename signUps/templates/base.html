@@ -20,7 +20,8 @@
             <li><a href="{% url 'signUps:profile' %}">My Profile</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
           {% else %}
-            <li><a class="navbar-link" href="{% url 'admin:index' %}">Admin</a></li> 
+          <!-- This is a comment
+            <li><a class="navbar-link" href="{% url 'admin:index' %}">Admin</a></li>  -->
             <li><a class="navbar-link" href="{% url 'signUps:register' %}">Register</a></li>    
             <li><a class="navbar-link" href="{% url 'signUps:user_login' %}">Login</a></li>
           {% endif %}

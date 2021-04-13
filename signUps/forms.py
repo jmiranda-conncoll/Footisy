@@ -10,6 +10,15 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username','first_name','last_name','password','email')
 
+class LoginForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    class Meta():
+        model = User
+        fields = ('username', 'password')
+        help_texts = {
+            'username': None,
+        }
+
 class UserProfileInfoForm(forms.ModelForm):
     class Meta():
         model = Accounts
@@ -37,3 +46,27 @@ class CreateGameInfoForm(forms.ModelForm):
     class Meta():
         model = Game
         fields = ('name', 'sport', 'level', 'max_players', 'date', 'time', 'description')
+
+SPORT_CHOICES2 = [
+    ('', 'All'),
+    ('basketball', 'Basketball'),
+    ('football', 'Football'),
+    ('soccer', 'Soccer'),
+    ('tennis', 'Tennis'),
+    ('spikeball', 'Spikeball'),
+    ]
+LEVEL_CHOICES2 = [
+    ('', 'All'),
+    ('Level 1: Beginner', 'Level 1: Beginner'),
+    ('Level 2: Just For Fun', 'Level 2: Just For Fun'),
+    ('Level 3: Break a sweat', 'Level 3: Break a sweat'),
+    ('Level 4: High Competition', 'Level 4: High Competition'),
+    ('Level 5: Intense Training', 'Level 5: Intense Training'),
+    ]
+
+class Gamefilters(forms.ModelForm):
+    sport = forms.CharField(label='Select Sport:', widget=forms.Select(choices= SPORT_CHOICES2), required=False)
+    level = forms.CharField(label='Select Level:', widget=forms.Select(choices= LEVEL_CHOICES2), required=False)
+    class Meta():
+        model = Game
+        fields = ('sport', 'level')

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from signUps.forms import UserForm, UserProfileInfoForm, CreateGameInfoForm
+from signUps.forms import UserForm, UserProfileInfoForm, CreateGameInfoForm, Gamefilters, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
@@ -51,8 +51,8 @@ def register(request):
 
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
@@ -65,7 +65,8 @@ def user_login(request):
             print("They used username: {} and password: {}".format(username,password))
             return HttpResponse("Invalid login details given")
     else:
-        return render(request, 'login.html', {})
+        login_form = LoginForm()
+        return render(request, 'login.html', {'login_form': login_form})
 
 @login_required
 def profile(request):
@@ -200,6 +201,62 @@ def profilebyID(request, profile_id):
 
 @login_required
 def displayAllGames(request):
+    if request.method == 'POST':
+        filter_form = Gamefilters(data=request.POST)
+        if filter_form.is_valid():
+            sp = request.POST['sport']
+            le = request.POST['level']
+            if (sp != ""):
+                sport = sp
+                if (le != ""):
+                    level = le
+                    game_objs = Game.objects.filter(sport = sport, level = level).exclude(host_id = request.user.id)[:50]
+                else:
+                    game_objs = Game.objects.filter(sport = sport).exclude(host_id = request.user.id)[:50]
+            else:
+                if (le != ""):
+                    level = le
+                    game_objs = Game.objects.filter(level = level).exclude(host_id = request.user.id)[:50]
+                else:
+                    #displays all games but filters out the ones they created
+                    game_objs = Game.objects.filter().exclude(host_id = request.user.id)[:50]
+
+            #filter out games that are full
+            attending_objs = GamePlayers.objects.filter(player_id = request.user.id)
+            for g in attending_objs:
+                for game in game_objs:
+                    if game.id == g.game.id:
+                        game.temp = True
+                        break
+            
+            context = {
+                "games_list": game_objs,
+                "filter_form": Gamefilters(),
+            }
+        else:
+            print(filter_form.errors)
+    else:
+        filter_form = Gamefilters()
+        #displays all games but filters out the ones they created
+        game_objs = Game.objects.filter().exclude(host_id = request.user.id)[:50]
+        #filter out games that are full
+        attending_objs = GamePlayers.objects.filter(player_id = request.user.id)
+        for g in attending_objs:
+            for game in game_objs:
+                if game.id == g.game.id:
+                    game.temp = True
+                    break
+        context = {
+            "games_list": game_objs,
+            "filter_form": filter_form,
+        }
+
+    return render(request, "allGames.html", context)
+
+
+
+""" @login_required
+def displayAllGames(request):
     #displays all games but filters out the ones they created
     game_objs = Game.objects.filter().exclude(host_id = request.user.id)[:50]
     #filter out games that are full
@@ -213,7 +270,7 @@ def displayAllGames(request):
         "games_list": game_objs,
     }
     return render(request, "allGames.html", context)
-
+ """
 @login_required
 def attendGame(request):
     game_id = request.GET.get('id', None)

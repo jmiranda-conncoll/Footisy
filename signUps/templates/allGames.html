@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load crispy_forms_tags %}
 {% block javascript %}
     <style type="text/css">
       #map {
@@ -217,6 +217,11 @@
         <input id="addField" type="text" name="address" placeholder="270 Mohegan Ave Pkwy, New London, CT">
         <button class="btn btn-primary" role="button" id="addSubmit" >Find Address</button>
         <br>
+        <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ filter_form|crispy }}
+          <input type="submit" name="" class="btn btn-secondary" value="Search">
+        </form>
     <div id="map"> </div>
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiRulAGF1hJPBF0Wh7qnw5dNZvL2lFP5c&callback=initMap"
