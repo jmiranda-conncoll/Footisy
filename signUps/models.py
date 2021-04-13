@@ -60,8 +60,8 @@ class GamePlayers(models.Model):
     player = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
 
 
-""" class Teammates(models.Model):
+class Teammates(models.Model):
 
-    user1 = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
+    user1 = models.ForeignKey(User,on_delete=models.CASCADE, null=True, related_name='user1')
 
-    user2 = models.ManyToManyField(User,on_delete=models.CASCADE, null=True) """
+    user2 = models.ForeignKey(User,on_delete=models.CASCADE, null=True, related_name='user2')

@@ -19,7 +19,10 @@ urlpatterns = [
     url(r'^allGames/$',views.displayAllGames,name='allGames'),
     url(r'^attend_game', views.attendGame, name='attendGame'),
     url(r'^leave_game/', views.leaveGame, name='leaveGame'),
+    url(r'^delete_game/', views.deleteGame, name='deleteGame'),
     url(r'^center_map/', views.centerMap, name='centerMap'),
+    url(r'^add_teammate', views.addTeammate, name='addTeammate'),
+    url(r'^remove_teammate/', views.removeTeammate, name='removeTeammate'),
 ]
 
 if settings.DEBUG:

@@ -47,6 +47,7 @@
                 center: { lat: 41.355, lng: -72.099 },
                 zoom: 7,
             });
+            $('#space').attr({"disabled": true});
 
             // Listen for clicks and add the location of the click.
             map.addListener('click', function(e) {
@@ -156,11 +157,15 @@
           $("#lon").attr({"value": lng,"placeholder": lng});
           $("#lon").html("longitude: "+ lng);
           map.setOptions({draggable: false});
+          $('#space').attr({"disabled": false});
+          $('#space2').attr({"disabled": true});
         }
 
         function unlock(){
           marker.setDraggable(true);
           map.setOptions({draggable: true});
+          $('#space2').attr({"disabled": false});
+          $('#space').attr({"disabled": true});
         }
 
     </script>

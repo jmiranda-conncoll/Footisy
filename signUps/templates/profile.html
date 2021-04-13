@@ -23,8 +23,23 @@
 
                 </div>
                 </div>
-
             </div>
+    </div>
+</div>
+<div class="container">
+    <div class="jumbotron">
+        <h3 class="b mb2">Teammates:</h3>
+            {% if team %}
+                {% for user in team %}
+                    <p class="mb2" id="{{ user.id }}"><a href="/signUps/user/{{ user.id }}" >@{{ user.username }}</a>  ({{ user.first_name }} {{ user.last_name }})</p>
+                {% endfor %}
+            {% else %}
+
+                <p class="mb2">You have no teammates yet! Start connecting with friends today!</p>
+
+            {% endif %}
+
+
     </div>
 </div>
 

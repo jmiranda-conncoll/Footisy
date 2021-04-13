@@ -1,9 +1,65 @@
 
 {% extends "base.html" %}
+{% block javascript %}
+    <style type="text/css">
+        .left {
+            margin-left: 0px;
+            margin-right: 0px;
+            width:50%;
+            float:left;
+            
+        }
+        .right {
+            margin-left: 0px;
+            margin-right: 0px;
+            width:50%;
+            float:left;
+            
+        }
+        #game {
+            background-color: white;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $(".btn-success").on("click", function(event) {
+                var id;
+                id = $(this).attr("data-id");
+                $(this).attr({"disabled": true});
+                $.ajax({
+                    url: '{% url "signUps:addTeammate" %}',
+                    data: {
+                        'id': id
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                    
+                    }
+                });
+            });
+            $(".btn-warning").on("click", function(event) {
+                var id;
+                id = $(this).attr("data-id");
+                $(this).attr({"disabled": true});
+                $.ajax({
+                    url: '{% url "signUps:removeTeammate" %}',
+                    data: {
+                        'id': id
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        
+                    }
+                });
+            });
+        });
+
+    </script>
+{% endblock %}
 
 {% block body_block %}
 
-<div class="container">
+<div class="container" style="width: 100%;">
     <div class="jumbotron">
             <div class="col-md-4">
                      <img src="{{ profile.profile_pic.url }}" class="img-responsive" style="width: 100%; float: center; margin-right: 10px;" /> 
@@ -11,10 +67,16 @@
     
             <h3 class="b mb2"> @{{ profile.username }}</h3>
             <h3 class="b mb2">{{ profile.name }}</h3>
+             {% if isTeammate %}
+                        <button class="btn btn-warning" type="button" data-id="{{ profile.user_id }}">Remove Teammate</button>
+                    {% else %}
+                        <button class="btn btn-success" type="button" data-id="{{ profile.user_id }}">Add Teammate</button>
+                    {% endif %}
             <div class="container">
                 <div class="jumbotron">
 
                 <div class="pl2">
+                   
                     <p class="mb2">Bio: {{ profile.bio }} </p>
 
                     <p class="mb2">Top 3 Sports: {{ profile.sports }}</p>
@@ -23,6 +85,42 @@
                 </div>
 
             </div>
+    </div>
+</div>
+<div class="container left">
+    <div class="jumbotron">
+        <h3 class="b mb2">Teammates:</h3>
+            {% if team %}
+                {% for user in team %}
+                    <p class="mb2" id="{{ user.id }}"><a href="/signUps/user/{{ user.id }}" >@{{ user.username }}</a>  ({{ user.first_name }} {{ user.last_name }})</p>
+                {% endfor %}
+            {% else %}
+
+                <p class="mb2">This user has no teammates yet!</p>
+
+            {% endif %}
+    </div>
+</div>
+<div class="container right">
+    <div class="jumbotron">
+        <h3 class="b mb2">Games attending:</h3>
+            {% if attending %}
+                {% for game in attending %}
+                    <div class="container">
+                    <div class="jumbotron" id="game">
+                        <p class="mb2">{{ game.name }} </p>
+                        <p class="mb2">Sport: {{ game.sport }} </p>
+                        <p class="mb2">{{ game.level }} </p>
+                        <p class="mb2 data_change" id="{{ game.id }}">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
+                        <a href="/signUps/games/{{ game.id }}" class="btn btn-info" role="button">See Game Details</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+
+                <p class="mb2">This user is not attending any games yet!</p>
+
+            {% endif %}
     </div>
 </div>
 

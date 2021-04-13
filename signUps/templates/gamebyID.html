@@ -7,7 +7,15 @@
                 var id;
                 id = $(this).attr("data-id");
                 $(this).attr({"disabled": true});
-                
+                $.ajax({
+                    url: '{% url "signUps:deleteGame" %}',
+                    data: {
+                        'id': id
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                    }
+                });
             });
             $(".btn-success").on("click", function(event) {
                 var id;
@@ -27,10 +35,7 @@
                         var _max;
                         _attend = data.attend;
                         _max = data.max;
-                        $("#data_change").html("Players Coming: "+ _attend +" / " + _max);
                         $("#data_change2").html("Players Coming: "+ _attend +" / " + _max);
-                        
-                        
                     }
                 });
             });
@@ -52,7 +57,6 @@
                         var _max;
                         _attend = data.attend;
                         _max = data.max;
-                        $("#data_change").html("Players Coming: "+ _attend +" / " + _max);
                         $("#data_change2").html("Players Coming: "+ _attend +" / " + _max);
                         
                     }
@@ -69,12 +73,11 @@
         <p class="mb2">Name: {{ game.name }} </p>
         <p class="mb2">Sport: {{ game.sport }} </p>
         <p class="mb2">{{ game.level }} </p>
-        <p class="mb2">{{ game.location }} </p>
-        <p class="mb2" id="data_change">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
+        <p class="mb2">Address: {{ game.location }} </p>
         {% if host %}
           <p class="mb2">*You are the host for this game*</p>
           <p class="mb2">{{ game.description }} </p>
-          <a href="" class="btn btn-danger" role="button">Delete Game</a>
+          <a href="" class="btn btn-danger" role="button" data-id="{{ game.id }}">Delete Game</a>
         {% else %}
           <p class="mb2">Host: <a href="/signUps/user/{{ game.host.id }}" >@{{ game.host.username }}</a>  ({{ game.host.first_name }} {{ game.host.last_name }})</p>
           <p class="mb2">Description: {{ game.description }} </p>
