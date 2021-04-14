@@ -155,8 +155,16 @@
                 animation: google.maps.Animation.DROP,
             });
             marker.addListener("click", () => {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
                 infowindow.open(mapa_, marker);
             })
+            infowindow.addListener('closeclick', () => {
+                marker.setAnimation(null);
+            });
+            mapa_.addListener("click", () => {
+                infowindow.close();
+                marker.setAnimation(null);
+            });
         }
 
         $(document).ready(function () {
