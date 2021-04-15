@@ -4,6 +4,7 @@
 {% block body_block %}
   <div class="container">
     <div class="jumbotron">
+    {% if not saved %}
         <h1>Edit Profile Here</h1>
         <h3>Just fill out the form</h3>
 <form enctype="multipart/form-data" method="POST">
@@ -11,6 +12,11 @@
           {{ user_profile_form|crispy }}
           <input type="submit" name="" class="btn btn-primary" value="Edit Profile">
         </form>
+    {% else %}
+
+    <h1>Information saved successfully</h1>
+
+    {% endif %}
         
     </div>
   </div>

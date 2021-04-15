@@ -98,11 +98,15 @@ def profile(request):
 
 @login_required
 def editProfile(request):
+    saved = False
     if request.method == 'POST':
         user_profile_form = UserProfileInfoForm(data=request.POST,files = request.FILES)
         if user_profile_form.is_valid():
             bio = request.POST["bio"]
-            pro_pic = request.FILES["profile_pic"]
+            if (request.POST["profile_pic"] != ''):
+                pro_pic = request.FILES["profile_pic"]
+            else:
+                pro_pic = ""
             sports = request.POST["sports"]
             user = request.user
             a = Accounts.objects.get(user_id = user.id)
@@ -120,12 +124,14 @@ def editProfile(request):
             #make sure none of the fields are required
 
             a.save()
+            saved = True
         else:
             print(user_profile_form.errors)
     else:
         user_profile_form = UserProfileInfoForm()
     return render(request,'editProfile.html',
-                          {'user_profile_form':user_profile_form,})
+                          {'user_profile_form':user_profile_form,
+                          "saved":saved})
 
 @login_required
 def createGame(request):

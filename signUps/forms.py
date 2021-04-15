@@ -20,6 +20,9 @@ class LoginForm(forms.ModelForm):
         }
 
 class UserProfileInfoForm(forms.ModelForm):
+    bio = forms.CharField(label='Enter bio:', required=False)
+    sports = forms.CharField(label='Enter your favorite 3 sports:', required=False)
+    profile_pic = forms.ImageField(label='Upload a profile picture here:', required=False)
     class Meta():
         model = Accounts
         fields = ('bio','sports','profile_pic')
