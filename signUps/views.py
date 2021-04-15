@@ -10,7 +10,7 @@ from decimal import Decimal
 import requests
 import json
 from urllib.parse import urlencode, urlparse, parse_qsl
-from datetime import date, timedelta
+from datetime import date as _date, timedelta
 
 # Create your views here.
 def index(request):
@@ -52,11 +52,12 @@ def register(request):
 
 def user_login(request):
     if request.method == 'POST':
-        # da = date.today()
-        # if (Game.objects.filter(date < da).exists()):
-        #     games = Game.objects.filter(date <= da)
-        #     for g in games:
-        #         deleteGamebyId(g.id)
+        da = _date.today()
+        #use dateRange function- startDate last year, end date yesterday
+        if (Game.objects.filter(date = da).exists()):
+            #games = Game.objects.filter(date = da)
+            for g in games:
+                deleteGamebyId(g.id)
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
