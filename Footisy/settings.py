@@ -27,7 +27,7 @@ SECRET_KEY = 'cn3=ps$er#9c1dflqxmg8op1x_^r+b#$s_y$9p_8+g6uhlwm57'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['footisy.herokuapp.com']
+ALLOWED_HOSTS = ['footisy.herokuapp.com','127.0.0.1']
 
 
 # Application definition
