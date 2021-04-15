@@ -46,6 +46,9 @@ class CreateGameInfoForm(forms.ModelForm):
     class Meta():
         model = Game
         fields = ('name', 'sport', 'level', 'max_players', 'date', 'time', 'description')
+        help_texts = {
+            'time': "Input time as military time format, ex: 16:00  (=4PM)",
+        }
 
 SPORT_CHOICES2 = [
     ('', 'All'),

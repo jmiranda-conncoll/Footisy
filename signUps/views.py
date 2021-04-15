@@ -52,10 +52,11 @@ def register(request):
 
 def user_login(request):
     if request.method == 'POST':
-        da = _date.today()
+        da = _date.today() - timedelta(days=1)
+        endDate  = da - timedelta(days=60)
         #use dateRange function- startDate last year, end date yesterday
-        if (Game.objects.filter(date = da).exists()):
-            #games = Game.objects.filter(date = da)
+        if (Game.objects.filter(date__range = [endDate, da]).exists()):
+            games = Game.objects.filter(date__range = [endDate, da])
             for g in games:
                 deleteGamebyId(g.id)
         username = request.POST['username']
