@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from decimal import Decimal
 import requests
 import json
-from urllib.parse import urlencode
+from django.utils.http import urlencode
 from datetime import date as _date, timedelta
 
 # Create your views here.
