@@ -103,7 +103,7 @@ def editProfile(request):
         user_profile_form = UserProfileInfoForm(data=request.POST,files = request.FILES)
         if user_profile_form.is_valid():
             bio = request.POST["bio"]
-            if (request.POST["profile_pic"] != ''):
+            if (len(request.FILES) != 0):
                 pro_pic = request.FILES["profile_pic"]
             else:
                 pro_pic = ""
@@ -263,16 +263,16 @@ def displayAllGames(request):
                 sport = sp
                 if (le != ""):
                     level = le
-                    game_objs = Game.objects.filter(sport = sport, level = level).exclude(host_id = request.user.id, isFull = True)[:50]
+                    game_objs = Game.objects.filter(sport = sport, level = level).exclude(host_id = request.user.id).exclude(isFull = True)[:50]
                 else:
-                    game_objs = Game.objects.filter(sport = sport).exclude(host_id = request.user.id, isFull = True)[:50]
+                    game_objs = Game.objects.filter(sport = sport).exclude(host_id = request.user.id).exclude(isFull = True)[:50]
             else:
                 if (le != ""):
                     level = le
-                    game_objs = Game.objects.filter(level = level).exclude(host_id = request.user.id, isFull = True)[:50]
+                    game_objs = Game.objects.filter(level = level).exclude(host_id = request.user.id).exclude(isFull = True)[:50]
                 else:
                     #displays all games but filters out the ones they created
-                    game_objs = Game.objects.filter().exclude(host_id = request.user.id, isFull = True)[:50]
+                    game_objs = Game.objects.filter().exclude(host_id = request.user.id).exclude(isFull = True)[:50]
 
             #filter out games that are full
             attending_objs = GamePlayers.objects.filter(player_id = request.user.id)
@@ -291,7 +291,7 @@ def displayAllGames(request):
     else:
         filter_form = Gamefilters()
         #displays all games but filters out the ones they created
-        game_objs = Game.objects.filter().exclude(host_id = request.user.id, isFull = True)[:50]
+        game_objs = Game.objects.filter().exclude(host_id = request.user.id).exclude(isFull = True)[:50]
         #filter out games that are full
         attending_objs = GamePlayers.objects.filter(player_id = request.user.id)
         for g in attending_objs:
