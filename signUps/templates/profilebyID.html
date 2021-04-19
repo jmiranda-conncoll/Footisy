@@ -18,6 +18,14 @@
         }
         #game {
             background-color: white;
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+        .t {
+            margin-left: 0px;
+            margin-right: 0px;
+            padding-left: 0px;
+            padding-right: 0px;
         }
     </style>
     <script>
@@ -102,11 +110,11 @@
     </div>
 </div>
 <div class="container right">
-    <div class="jumbotron">
+    <div class="jumbotron t">
         <h3 class="b mb2">Games attending:</h3>
             {% if attending %}
                 {% for game in attending %}
-                    <div class="container">
+                    <div class="container t">
                     <div class="jumbotron" id="game">
                         <p class="mb2">{{ game.name }} </p>
                         <p class="mb2">Sport: {{ game.sport }} </p>
