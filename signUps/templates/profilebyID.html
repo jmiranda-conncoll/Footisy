@@ -7,6 +7,7 @@
             margin-right: 0px;
             width:50%;
             float:left;
+            padding-right: 5px;
             
         }
         .right {
@@ -14,12 +15,16 @@
             margin-right: 0px;
             width:50%;
             float:left;
+            padding-left: 0px;
             
         }
         #game {
             background-color: white;
             margin-left: 0px;
             margin-right: 0px;
+            padding-left: 0px;
+            padding-right: 0px;
+            text-align: center;
         }
         .t {
             margin-left: 0px;
@@ -83,7 +88,9 @@
                     {% else %}
                         <button class="btn btn-success" type="button" data-id="{{ profile.user_id }}">Add Teammate</button>
                     {% endif %}
-            <div class="container">
+    </div>
+</div>
+<div class="container" style="width: 100%;">
                 <div class="jumbotron">
 
                 <div class="pl2">
@@ -95,8 +102,6 @@
                 </div>
                 </div>
 
-            </div>
-    </div>
 </div>
 <div class="container left">
     <div class="jumbotron">
@@ -118,11 +123,11 @@
             {% if attending %}
                 {% for game in attending %}
                     <div class="container t">
-                    <div class="jumbotron" id="game">
+                    <div class="jumbotron t" id="game">
                         <p class="mb2">{{ game.name }} </p>
-                        <p class="mb2">Sport: {{ game.sport }} </p>
+                        <p class="mb2">{{ game.sport }} </p>
                         <p class="mb2">{{ game.level }} </p>
-                        <p class="mb2 data_change" id="{{ game.id }}">Players Coming: {{ game.current_players }} / {{ game.max_players }} </p>
+                        <p class="mb2 data_change" id="{{ game.id }}">Players: {{ game.current_players }} / {{ game.max_players }} </p>
                         <a href="/signUps/games/{{ game.id }}" class="btn btn-info" role="button">See Game Details</a>
                     </div>
                 </div>

@@ -6,13 +6,15 @@
 <div class="container">
     <div class="jumbotron">
             <div class="col-md-4">
-                     <img src="{{ profile.profile_pic.url }}" class="img-responsive" style="width: 100%; float: center; margin-right: 10px;" /> 
+                     <img src="{{ profile.profile_pic.url }}" class="img-responsive" style="width: 100%; float: center; margin-right: 10px; margin-bottom: 50px;" /> 
             </div> 
     
             <h3 class="b mb2"> @{{ profile.username }}</h3>          
             <h3 class="b mb2">{{ profile.name }}</h3>            
-            <div class="container">
-                <div class="jumbotron">
+    </div>
+</div>
+ <div class="container">
+    <div class="jumbotron">
 
                 <div class="pl2">
                     <a class="navbar-link" href="{% url 'signUps:editProfile' %}">Edit Profile</a>
@@ -22,9 +24,8 @@
                     <p class="mb2">Top 3 Sports: {{ profile.sports }}</p>
 
                 </div>
-                </div>
-            </div>
-    </div>
+        </div>
+                
 </div>
 <div class="container">
     <div class="jumbotron">

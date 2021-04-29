@@ -44,8 +44,8 @@
 
         function initMap() {
             map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 41.355, lng: -72.099 },
-                zoom: 7,
+                center: { lat: 40.53858, lng: -96.16294 },
+                zoom: 4,
             });
             $('#space').attr({"disabled": true});
 
@@ -195,8 +195,8 @@
 <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
           {{ game_form|crispy }}
-          <input type="hidden" name="game_lat" id="lat" value="">
-          <input type="hidden" name="game_long" id="lon" value="">
+          <input type="hidden" name="game_lat" id="lat" value="{{ lat }}">
+          <input type="hidden" name="game_long" id="lon" value="{{ lng }}">
           <input type="submit" name="" class="btn btn-primary" value="Create Game">
         </form>
       {% else %}

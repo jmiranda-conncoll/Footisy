@@ -6,8 +6,8 @@
       #map {
         margin-left: auto;
         margin-right: auto;
-        width:70%;
-        height:425px;
+        width:100%;
+        height:450px;
       }
       #addField {
         width: 400px;
@@ -35,8 +35,8 @@
 
         function initMap() {
             var map2 = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 41.355, lng: -72.099 },
-                zoom: 7,
+                center: { lat: 40.53858, lng: -96.16294 },
+                zoom: 4,
             });
 
             var l = 41.355;
@@ -91,7 +91,7 @@
                       label: "you",
                     });
                     map2.setCenter(pos);
-                    map2.setZoom(13);
+                    map2.setZoom(12);
                   },
                   () => {
                     handleLocationError(true, infoWindow, map2.getCenter(), map2);
@@ -117,7 +117,7 @@
                         lng: data.lng,
                       };
                       map2.setCenter(pos);
-                      map2.setZoom(13);
+                      map2.setZoom(12);
                       var marker2 = new google.maps.Marker({
                         position: pos,
                         map: map2,
@@ -157,6 +157,11 @@
             marker.addListener("click", () => {
                 marker.setAnimation(google.maps.Animation.BOUNCE);
                 infowindow.open(mapa_, marker);
+                mapa_.setCenter(latLng);
+                if (mapa_.getZoom() < 9){
+                  mapa_.setZoom(9);
+                }
+                
             })
             infowindow.addListener('closeclick', () => {
                 marker.setAnimation(null);
@@ -228,7 +233,7 @@
         <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
           {{ filter_form|crispy }}
-          <input type="submit" name="" class="btn btn-secondary" value="Search">
+          <input id="changeColor" type="submit" name="" class="btn btn-primary" value="Search" style="margin-bottom: 10px;">
         </form>
     <div id="map"> </div>
     <script
@@ -241,7 +246,7 @@
             {% for game in games_list %}
                 <div class="container">
                     <div class="jumbotron" style="padding-bottom: 80px;">
-                    <div class="col-md-4">
+                    <div class="col-sm-4">
                      <img src="/media/images/{{ game.sport }}-game.jpg" class="img-responsive" style="width: 100%; height: 200px; float: center; margin-right: 10px; margin-bottom: 10px; margin-top: 0px;" /> 
             </div> 
                         <p class="mb2">{{ game.name }} </p>

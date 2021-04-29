@@ -136,14 +136,17 @@ def editProfile(request):
 @login_required
 def createGame(request):
     created = True
+    lat = 0
+    lng = 0
     if request.method == 'POST':
+        _lat = request.POST["game_lat"]
+        _lng = request.POST["game_long"]
         game_form = CreateGameInfoForm(data=request.POST)
         if game_form.is_valid():
             game = game_form.save()
+
             game.lat = request.POST["game_lat"]
             game.lng = request.POST["game_long"]
-            _lat = request.POST["game_lat"]
-            _lng = request.POST["game_long"]
             #add code here to create address
             locat = getAddress(_lat, _lng)
             game.location = locat
@@ -153,12 +156,16 @@ def createGame(request):
             game.save()
             created = False
         else:
+            lat = _lat
+            lng = _lng
             print(game_form.errors)
     else:
         game_form = CreateGameInfoForm()
     return render(request,'createGame.html',
                           {'game_form':game_form,
-                          'not_created':created})
+                          'not_created':created,
+                          'lat': lat,
+                          'lng': lng})
 
 @login_required
 def displayMyGames(request):
