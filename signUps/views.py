@@ -369,6 +369,7 @@ def leaveGame(request):
     gamePlayer = GamePlayers.objects.filter(game_id = game_id).get(player = player).delete()
     game_obj = Game.objects.get(id = game_id)
     temp = game_obj.current_players
+    game_obj.isFull = False
 
     temp = temp - 1
     game_obj.current_players = temp
